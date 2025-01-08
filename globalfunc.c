@@ -4,12 +4,15 @@
 //constants
 #define PAIR1 1
 #define PAIR2 2
+#define PAIR3 3
 //Int Variables
-int NumDir, x, y;
+int NumDir, x, y, quantity;
 //CharStrings 
-char* directory[];
+char* directory[]={"/"};
 //Char Variables
 char* cdcom= "cd";
+char* lscom= "ls";
+char* options[]={""}; 
 
 
 void definitions()
@@ -18,9 +21,11 @@ void definitions()
  initscr();
  start_color();
  keypad(stdscr,TRUE);
+ noecho();
 
- init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
- init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
+  init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
+  init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
+  init_pair(PAIR3, COLOR_WHITE, COLOR_YELLOW);
 }
 
 void blackout()
@@ -75,4 +80,31 @@ void callsystem(){
  pclose(IsDir);
  }
 }
+
+void readsystem()
+{
+  FILE* reading= popen(lscom, "r");
+  char buffer[256];
+  while (fgets(buffer, sizeof(buffer), reading) != NULL) {
+    quantity++;
+  }
+  for(int i=0; i<quantity; i++){
+  snprintf(options[i], sizeof(options[i]), "%s", buffer);
+  }
+ 
+ 
+}
+
+void normalappeareance(){
+  for(int i= 0; i<x; i++){
+    attron(COLOR_PAIR(PAIR3));
+    mvprintw(0,i,"-");
+  }
+  attron(COLOR_PAIR(PAIR1));
+  refresh();
+  }
+
+
+
+
 #endif
