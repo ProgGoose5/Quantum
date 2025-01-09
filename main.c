@@ -1,14 +1,13 @@
 #include "librariesreq.h"
-#include "globalfunc.c"
 #include "appereance.c"
 
 int main()
 {
-    definitions();    
+    definitions();   
+    blackout(); 
     while(1){
         Resizing();
-        blackout();
-        normalappeareance();
+        genprint();
         refresh();
     }
 }
