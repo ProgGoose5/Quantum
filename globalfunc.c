@@ -6,7 +6,7 @@
 #define PAIR2 2
 #define PAIR3 3
 //Int Variables
-int NumDir, x, y, quantity;
+int NumDir, x, y, quantity, actualfile, filelayout;
 //CharStrings 
 char* directory[]={"/"};
 //Char Variables
@@ -17,11 +17,14 @@ char* options[]={""};
 
 void definitions()
 {
- setlocale(LC_ALL, "");
- initscr();
- start_color();
- keypad(stdscr,TRUE);
- noecho();
+  setlocale(LC_ALL, "");
+  initscr();
+  start_color();
+  keypad(stdscr,TRUE);
+  noecho();
+
+  actualfile=0;
+  filelayout= 5;
 
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
   init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
@@ -51,8 +54,8 @@ void Resizing(){
 if(lns != LINES || cols != COLS){
   lns = LINES;
   cols = COLS;
-  x = cols;
-  y = lns;
+  x = cols-2;
+  y = lns-1;
 }
 }
 
@@ -104,7 +107,44 @@ void normalappeareance(){
   refresh();
   }
 
+void KeyCommands(){
 
+  int getinput = getch(); //Getch gets the input from the keyboard.
+  char command[100];
+  switch (getinput) { //Cases for different Keys
+  case KEY_LEFT:
+
+  if (actualfile > 0) {
+    actualfile--;
+  }
+  break;
+
+  case KEY_RIGHT:
+    if (actualfile < quantity - 1) {
+      actualfile++;
+      }
+  break;
+
+
+  case KEY_UP:
+    if (actualfile>= filelayout){
+      actualfile-=filelayout;
+      }
+    break;
+
+  case KEY_DOWN:
+    if (actualfile < quantity - filelayout){
+      actualfile+=filelayout;
+      }
+    break;
+  }
+}
+
+void selection(){
+
+
+}
 
 
 #endif
+
