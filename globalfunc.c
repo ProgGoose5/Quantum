@@ -1,4 +1,5 @@
 #include "librariesreq.h"
+
 #ifndef GLOBALFUNC_C
 
 //constants
@@ -6,13 +7,14 @@
 #define PAIR2 2
 #define PAIR3 3
 //Int Variables
-int NumDir, x, y, quantity, actualfile, filelayout;
+int x, y, quantity, actualfile, filelayout, cou;
+int NumDir= 0;
 //CharStrings 
-char* directory[]={"/"};
+char* directory[]={"/home/goose"};
 //Char Variables
 char* cdcom= "cd";
 char* lscom= "ls";
-char* options[]={""}; 
+char** options = NULL;
 
 
 void definitions()
@@ -61,39 +63,47 @@ if(lns != LINES || cols != COLS){
 
 void callsystem(){
   char SettedDir[256];
-  for(int i= 0; i<NumDir; i++){
-    snprintf(SettedDir, sizeof(SettedDir), "%s", directory[NumDir]);
-    }
+  for(int i=0; i<=NumDir; i++)
+  snprintf(SettedDir, sizeof(SettedDir), "%s", directory[NumDir]);
 
-  char* error= ("bash: %s No such file or directory", SettedDir);
-  char* truedir=  ("bash: %s Is a directory", SettedDir);
-
-
-  FILE* IsDir = popen(SettedDir, "r");
-  char result[256];
-  fgets(result, sizeof(result), IsDir);
-  if (strcmp(result, error) == 0){
-  printw("%s",error);
-  pclose(IsDir);
-  }
- else if (strcmp(result, truedir) == 0){
- char command[512];
- snprintf(command, sizeof(command), "%s %s", cdcom, SettedDir);
- system(command);
- pclose(IsDir);
- }
+DIR* dir = opendir(SettedDir);
+if (dir) {
+  // Directory exists
+  closedir(dir);
+ //printw("bash: %s: Is a directory\n", SettedDir);
+} else {
+  // Directory does not exist
+  //printw("bash: %s: No such file or directory\n", SettedDir);
+}
 }
 
 void readsystem()
 {
-  FILE* reading= popen(lscom, "r");
+  DIR* dir;
+  FILE* reading = popen(lscom, "r");
   char buffer[256];
+  quantity = 0;
+
+  // First pass to count the number of entries
   while (fgets(buffer, sizeof(buffer), reading) != NULL) {
     quantity++;
   }
-  for(int i=0; i<quantity; i++){
-  snprintf(options[i], sizeof(options[i]), "%s", buffer);
+  pclose(reading);
+
+  // Allocate memory for options array
+  options = (char**)malloc(quantity * sizeof(char*));
+  for (int i = 0; i < quantity; i++) {
+    options[i] = (char*)malloc(256 * sizeof(char));
   }
+
+  // Second pass to store the entries
+  reading = popen(lscom, "r");
+  int index = 0;
+  while (fgets(buffer, sizeof(buffer), reading) != NULL) {
+    snprintf(options[index], 256, "%s", buffer);
+    index++;
+  }
+  pclose(reading);
  
  
 }
@@ -145,6 +155,15 @@ void selection(){
 
 }
 
+void leftpad(){}
+
+void rightpad(){
+  cou= 2;
+  for (int i= 0; i < quantity; i++){
+    move (cou, (x/4)+2);
+    printw("%s", options[i]);  
+  }
+
+}
 
 #endif
-
