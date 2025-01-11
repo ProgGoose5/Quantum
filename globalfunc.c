@@ -10,11 +10,11 @@
 int x, y, quantity, actualfile, filelayout, cou;
 int NumDir= 0;
 //CharStrings 
-char* directory[]={"/home/goose"};
+char* directory[]={"/home"};
 //Char Variables
-char* cdcom= "cd";
+char* cdcom= "cd ";
 char* lscom= "ls";
-char** options = NULL;
+char* options[1000];
 
 
 void definitions()
@@ -69,44 +69,35 @@ void callsystem(){
 DIR* dir = opendir(SettedDir);
 if (dir) {
   // Directory exists
+ char command[256] = "";
+  strcat(command, cdcom);
+  strcat(command, SettedDir);
+  system(command); 
+FILE* openingdir= popen(lscom, "r");
+char temporalfile[300];
+int i = 0;
+while (fgets(temporalfile, sizeof(temporalfile), openingdir) != NULL) {
+  options[i] = strdup(temporalfile);
+  i++;
+}
+pclose(openingdir);
+
+cou = 2;
+for (int j = 0; j < i; j++) {
+  move(cou, (x/4) + 2);
+  attron(COLOR_PAIR(PAIR1));
+  printw("%s", options[j]);
+  cou++;
+}
+
   closedir(dir);
- //printw("bash: %s: Is a directory\n", SettedDir);
+ printw("bash: %s: Is a directory\n", SettedDir);
 } else {
   // Directory does not exist
-  //printw("bash: %s: No such file or directory\n", SettedDir);
+  printw("bash: %s: No such file or directory\n", SettedDir);
 }
 }
 
-void readsystem()
-{
-  DIR* dir;
-  FILE* reading = popen(lscom, "r");
-  char buffer[256];
-  quantity = 0;
-
-  // First pass to count the number of entries
-  while (fgets(buffer, sizeof(buffer), reading) != NULL) {
-    quantity++;
-  }
-  pclose(reading);
-
-  // Allocate memory for options array
-  options = (char**)malloc(quantity * sizeof(char*));
-  for (int i = 0; i < quantity; i++) {
-    options[i] = (char*)malloc(256 * sizeof(char));
-  }
-
-  // Second pass to store the entries
-  reading = popen(lscom, "r");
-  int index = 0;
-  while (fgets(buffer, sizeof(buffer), reading) != NULL) {
-    snprintf(options[index], 256, "%s", buffer);
-    index++;
-  }
-  pclose(reading);
- 
- 
-}
 
 void normalappeareance(){
   for(int i= 0; i<x; i++){
@@ -158,11 +149,6 @@ void selection(){
 void leftpad(){}
 
 void rightpad(){
-  cou= 2;
-  for (int i= 0; i < quantity; i++){
-    move (cou, (x/4)+2);
-    printw("%s", options[i]);  
-  }
 
 }
 
