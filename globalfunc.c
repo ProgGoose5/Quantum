@@ -10,11 +10,10 @@
 int x, y, quantity, actualfile, filelayout, cou;
 int NumDir= 0;
 //CharStrings 
-char* directory[]={"/home"};
+char* directory[]={"","/home"};
 //Char Variables
 char* cdcom= "cd ";
-char* lscom= "ls";
-char* options[1000];
+char* options[1000] = {NULL};
 
 
 void definitions()
@@ -62,41 +61,33 @@ if(lns != LINES || cols != COLS){
 }
 
 void callsystem(){
-  char SettedDir[256];
-  for(int i=0; i<=NumDir; i++)
-  snprintf(SettedDir, sizeof(SettedDir), "%s", directory[NumDir]);
+  directory[0]= cdcom;
+  char combinedDir[256];
+  snprintf(combinedDir, sizeof(combinedDir), "%s%s", directory[0], directory[1]);
+    char lscom[256];
+    snprintf(lscom, sizeof(lscom), "ls %s", directory[1]);
+  //mvprintw(3,7, "%s", combinedDir);
+  system(combinedDir);
+  FILE* Readings = popen(lscom, "r");
+  if (Readings == NULL) {
+    mvprintw(4, 7, "Failed to run command");
+    return;
+  }
 
-DIR* dir = opendir(SettedDir);
-if (dir) {
-  // Directory exists
- char command[256] = "";
-  strcat(command, cdcom);
-  strcat(command, SettedDir);
-  system(command); 
-FILE* openingdir= popen(lscom, "r");
-char temporalfile[300];
-int i = 0;
-while (fgets(temporalfile, sizeof(temporalfile), openingdir) != NULL) {
-  options[i] = strdup(temporalfile);
-  i++;
-}
-pclose(openingdir);
+  char buffer[256];
+  int index = 0;
+  while (fgets(buffer, sizeof(buffer), Readings) != NULL && index < 1000) {
+    options[index] = strdup(buffer);
+    index++;
+  }
 
-cou = 2;
-for (int j = 0; j < i; j++) {
-  move(cou, (x/4) + 2);
-  attron(COLOR_PAIR(PAIR1));
-  printw("%s", options[j]);
-  cou++;
-}
-
-  closedir(dir);
- printw("bash: %s: Is a directory\n", SettedDir);
-} else {
-  // Directory does not exist
-  printw("bash: %s: No such file or directory\n", SettedDir);
-}
-}
+  pclose(Readings);
+move(3, 13);
+  for(int i=0; i < index; i++){
+    
+    printw("%s  ", options[i]);
+  }
+  }
 
 
 void normalappeareance(){
@@ -143,12 +134,6 @@ void KeyCommands(){
 
 void selection(){
 
-
-}
-
-void leftpad(){}
-
-void rightpad(){
 
 }
 
