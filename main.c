@@ -5,13 +5,17 @@ int main()
 {
     definitions();   
     blackout();
+    clear();
     
      while(1){
-        callsystem(); 
-       Resizing();
+        
+        Resizing();        
         genprint();
-        rightpad(); 
-        refresh();
+        callsystem(); 
+        KeyCommands();
+        
+        
+
     } 
    return 0;
 }
