@@ -7,10 +7,11 @@
 #define PAIR2 2
 #define PAIR3 3
 //Int Variables
-int x, y, quantity, actualfile, filelayout, cou;
+int x, y, quantity, selectedfile=0, actualfile=0, filelayout, cou;
 int NumDir= 0;
+int c= 0;
 //CharStrings 
-char* directory[]={"","/home"};
+char* directory[]={"","/home/goose"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {NULL};
@@ -24,7 +25,7 @@ void definitions()
   keypad(stdscr,TRUE);
   noecho();
 
-  actualfile=0;
+ 
   filelayout= 5;
 
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
@@ -66,8 +67,9 @@ void callsystem(){
   snprintf(combinedDir, sizeof(combinedDir), "%s%s", directory[0], directory[1]);
     char lscom[256];
     snprintf(lscom, sizeof(lscom), "ls %s", directory[1]);
-  //mvprintw(3,7, "%s", combinedDir);
+  //mvprintw(3,7, "%d", combinedDir);
   system(combinedDir);
+  
   FILE* Readings = popen(lscom, "r");
   if (Readings == NULL) {
     mvprintw(4, 7, "Failed to run command");
@@ -79,62 +81,45 @@ void callsystem(){
   while (fgets(buffer, sizeof(buffer), Readings) != NULL && index < 1000) {
     options[index] = strdup(buffer);
     index++;
+    quantity=index;
   }
 
   pclose(Readings);
-move(3, 13);
+  actualfile=0;
+  c=(x/4)+1;
+  cou=2; 
   for(int i=0; i < index; i++){
     
-    printw("%s  ", options[i]);
-  }
-  }
-
-
-void normalappeareance(){
-  for(int i= 0; i<x; i++){
-    attron(COLOR_PAIR(PAIR3));
-    mvprintw(0,i,"-");
+    if (i == selectedfile)
+    { attron(COLOR_PAIR(PAIR2));}
+    else
+    { attron(COLOR_PAIR(PAIR1));}
+    
+    mvprintw(cou, c, "%s", options[i]);
+    c+= sizeof(options[i]);
   }
   attron(COLOR_PAIR(PAIR1));
+  //mvprintw(8,8,"%d", actualfile);
   refresh();
   }
 
 void KeyCommands(){
-
-  int getinput = getch(); //Getch gets the input from the keyboard.
-  char command[100];
-  switch (getinput) { //Cases for different Keys
-  case KEY_LEFT:
-
-  if (actualfile > 0) {
-    actualfile--;
-  }
-  break;
-
-  case KEY_RIGHT:
-    if (actualfile < quantity - 1) {
-      actualfile++;
-      }
-  break;
-
-
-  case KEY_UP:
-    if (actualfile>= filelayout){
-      actualfile-=filelayout;
-      }
+  int cius= getch();
+  switch(cius){
+    case KEY_RIGHT:
+    if(selectedfile<quantity-1)
+    {selectedfile++;}
     break;
 
-  case KEY_DOWN:
-    if (actualfile < quantity - filelayout){
-      actualfile+=filelayout;
-      }
+    case KEY_LEFT:
+    if(selectedfile>0)
+    {selectedfile--;}
     break;
+
+
   }
-}
-
-void selection(){
-
 
 }
+
 
 #endif
