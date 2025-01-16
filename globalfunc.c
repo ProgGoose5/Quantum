@@ -7,7 +7,7 @@
 #define PAIR2 2
 #define PAIR3 3
 //Int Variables
-int x, y, quantity, selectedfile=0, actualfile=0, filelayout, cou;
+int x, y, quantity, gap, selectedfile=0, actualfile=0, filelayout, cou;
 int NumDir= 0;
 int c= 0;
 //CharStrings 
@@ -61,6 +61,19 @@ if(lns != LINES || cols != COLS){
 }
 }
 
+void Boxrep(){
+    int x2= x/4+1;
+    int appdiv= x2/5;
+
+    for(int l=0; l<4; l++){
+      move(l+cou+2,x2);
+        for(int k= 0; k<appdiv; k++){
+            
+            printw("   ");
+        }
+    }
+}
+
 void callsystem(){
   directory[0]= cdcom;
   char combinedDir[256];
@@ -95,9 +108,20 @@ void callsystem(){
     else
     { attron(COLOR_PAIR(PAIR1));}
     
+    Boxrep();
+
+
+    if((i%5)==0)
+    { cou+=4; c=(x/4)+1;}
+    gap=(sizeof(options[i]))/4;
+
+    
+    c+= gap;
     mvprintw(cou, c, "%s", options[i]);
-    c+= sizeof(options[i]);
+    c+= sizeof(options[i])+gap;
   }
+
+
   attron(COLOR_PAIR(PAIR1));
   //mvprintw(8,8,"%d", actualfile);
   refresh();
