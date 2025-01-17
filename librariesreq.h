@@ -5,3 +5,5 @@
 #include <locale.h>
 #include <string.h>
 #include <wctype.h>
+#include <dirent.h>
+#include <math.h>
