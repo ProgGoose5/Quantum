@@ -15,18 +15,19 @@ void genprint(){
     char* corner4= "┙";
 
     definitions();
+    attron(COLOR_PAIR(PAIR1));
     //Corners
 
         refresh();
-    for(int i= 0; i<x; i++){
-        mvprintw(0,i,"%s", decoration1);
-        mvprintw(y,i,"%s",decoration1);
+    for(int g= 0; g<x; g++){
+        mvprintw(0,g,"%s", decoration1);
+        mvprintw(y,g,"%s",decoration1);
 
     }
-    for(int i= 0; i<y; i++){
-        mvprintw(i,0,"%s", decoration2);
-        mvprintw(i,x/4,"%s", decoration2);
-        mvprintw(i, x, "%s", decoration2);
+    for( int g= 0; g<y; g++){
+        mvprintw(g,0,"%s", decoration2);
+        mvprintw(g,x/4,"%s", decoration2);
+        mvprintw(g, x, "%s", decoration2);
     }
     mvprintw(0, x/4, "%s", decoration3);
     mvprintw(y, x/4, "%s", decoration4);
@@ -35,10 +36,9 @@ void genprint(){
     mvprintw(0,x, "%s", corner2);
     mvprintw(y,0, "%s", corner3);
     mvprintw(y,x, "%s", corner4);
+    refresh();
 }
 
 
-void FolderIcon(){
-    
-}
+
 #endif 
