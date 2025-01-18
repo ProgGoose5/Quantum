@@ -3,19 +3,26 @@
 
 int main()
 {
-    definitions();   
-    blackout();
+    definitions();  
+    
+    
     clear();
     
      while(1){
         
-        Resizing();        
         genprint();
-        callsystem(); 
+        Resizing(); 
+        blackout();
+        boxesdef(); 
+        Boxrep();
+        genprint();        
+        //callsystem(); 
         KeyCommands();
         
         
 
     } 
+   return 0;
+}
    return 0;
 }
