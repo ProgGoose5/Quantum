@@ -220,7 +220,7 @@ void Boxrep(){
 
 if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
-      { verification=filelayout*4;
+      { verification=20;
         verify();
         mvprintw(L, O, "p");
         if(filelayout>=2){
@@ -233,7 +233,7 @@ if(filedivision>=5){
         verify();
         mvprintw(L+(Fileubs4.yposition),O, "s"); }
         if(filelayout>=5){
-        
+        verify();
         mvprintw(L+(Fileubs5.yposition),O, "t"); }
       } }
       //When there's more fors... i must add an IF to
@@ -315,7 +315,7 @@ void KeyCommands(){
     break;
 
     case KEY_DOWN:
-    if(selectedfile<((filelayout*filedivision)-1)){
+    if(selectedfile<(filelayout*filedivision)-1){
     selectedfile++;
     }
     break;
