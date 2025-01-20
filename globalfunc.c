@@ -7,15 +7,25 @@
 #define PAIR2 2
 #define PAIR3 3
 //Int Variables
-int x, y, i, quantity, dirbar=2, txright, filedivision=5, ygaps, gap, selectedfile=0, actualfile=0, filelayout, cou;
+int x, y; //Screen position variables
+int i, f=1, t=1; //Used to operate with fors and other things
+int quantity; //Probably going to delete it... IDK what it does
+int dirbar=2; //The space that occupies the directory bar
+int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
+int cou; 
+int ygaps, gap;
+int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
 int NumDir= 0;
 int verification=0;
 int c= 0;
+int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication;
 //CharStrings 
 char* directory[]={"","/home/goose"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
+
+bool g=FALSE;
 
 struct Fileubs
 {
@@ -85,9 +95,8 @@ if((y/filelayout)<10 && filelayout>1){
 if((y/filelayout)>14){
   filelayout++;
 }
-
-int boxesdivisions= 18;
-int initboxes= (x/4)+1;
+ boxesdivisions= 18;
+initboxes= (x/4)+1;
 ygaps= round((y/5));
 
 //definition of Fileubs1
@@ -121,6 +130,17 @@ Fileubs5.actualy= 0;
 Fileubs5.xlength= boxesdivisions+Fileubs5.xposition;
 
 
+}
+
+void boxesfunction(){
+  
+  borderval=1;
+  borderx= ((boxesdivisions-(borderval*2))-sizeof(options[i]));
+  realxubication= (initboxes*f)+(borderx/2); //The real location that should be printed
+  realyubication= ((dirbar+5)*t)+cou;
+  if(i%filedivision!=0){f++;}
+  else{f=1; t++;}
+  if(t%(filelayout+1)){t=1; g=TRUE;}
 }
 
 void verify(){
@@ -273,23 +293,42 @@ void callsystem(){
 
   actualfile=0;
   c=(x/4)+1;
-  cou=2; 
-  for(i=0; i < index; i++){
-    
-    if (i == selectedfile)
+  cou=1; 
+  for(i=0; i < index; i++){          
+
+  
+ if (i == selectedfile)
     { attron(COLOR_PAIR(PAIR2));}
     else
     { attron(COLOR_PAIR(PAIR1));}
-   
+  boxesfunction();
 
-    if((i%5)==0)
-    { cou+=4; c=(x/4)+1;}
-    gap=5;
+  if (sizeof(options[i])>16){
+              char Printylonger[128];
+              snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
+                for(int p= 0; Printylonger[p]!='\0'; p++){
+                  mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
+                  if((p%16)==0){cou++;}
+                }
+                }
 
+  else{
+    char Printy[16];
+    snprintf(Printy, sizeof(Printy), "%s", options[i]);
+    for (int j = 0; Printy[j] != '\0'; j++) {
+        if (isalpha(Printy[j])) {
+            mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
+            
+            }
+        }
+    }
+    
+  if (g=TRUE){break;}
+  }
     //c+= gap;
     //mvprintw(cou, c, "%s", options[i]);
     //c+= strlen(options[i])+gap;
-  }
+  
 
 
   attron(COLOR_PAIR(PAIR1));
@@ -326,4 +365,3 @@ void KeyCommands(){
 
 
 #endif
-
