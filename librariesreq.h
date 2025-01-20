@@ -7,3 +7,4 @@
 #include <wctype.h>
 #include <dirent.h>
 #include <math.h>
+#include <ctype.h>
