@@ -17,8 +17,8 @@ int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
 int NumDir= 0;
 int verification=0;
-int c= 0;
-int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication;
+int invertedcordinates= 0;
+int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
 char* directory[]={"","/home/goose"};
 //Char Variables
@@ -135,12 +135,63 @@ Fileubs5.xlength= boxesdivisions+Fileubs5.xposition;
 void boxesfunction(){
   
   borderval=1;
-  borderx= ((boxesdivisions-(borderval*2))-sizeof(options[i]));
-  realxubication= (initboxes*f)+(borderx/2); //The real location that should be printed
-  realyubication= ((dirbar+5)*t)+cou;
-  if(i%filedivision!=0){f++;}
-  else{f=1; t++;}
-  if(t%(filelayout+1)){t=1; g=TRUE;}
+  borderx=((boxesdivisions-(borderval*2))-sizeof(options[i]));
+
+
+if((i%(filedivision+1))!=0){
+  f++;
+}
+else{f=1; t++;}
+
+  switch (f)
+  {
+  case 1:
+    realxubication= Fileubs1.xposition+(borderx/2);
+    break;
+  
+  case 2:
+    realxubication= Fileubs2.xposition+(borderx/2);
+    break;
+
+  case 3: 
+    realxubication= Fileubs3.xposition+(borderx/2);
+    break;
+
+  case 4:
+    realxubication= Fileubs4.xposition+(borderx/2);
+    break;
+
+  case 5:
+    realxubication= Fileubs5.xposition+(borderx/2);
+    break;
+
+  default:
+    break;
+  }
+
+  switch(t){
+
+    case 1:
+    realyubication= 44+cou; //5
+    break;
+
+    case 2:
+    realyubication= 7+cou; //1
+    break;
+
+    case 3:
+    realyubication= 17+cou; //2
+    break;
+
+    case 4:
+    realyubication= 27+cou; //3
+    break;
+
+    case 5:
+    realyubication= 37+cou; //4
+    break;
+
+  }
 }
 
 void verify(){
@@ -153,7 +204,8 @@ else{
   attron(COLOR_PAIR(PAIR1));
   verification++;
 }
-
+if (quantity==verification){g=TRUE;}
+else{g=FALSE;}
 }
 
 void Boxrep(){
@@ -167,92 +219,92 @@ void Boxrep(){
       for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
       { verification=0;
         verify();
-        mvprintw(L, O, "1");
-        if(filelayout>=2){
+        mvprintw(L, O, "░");
+        if(filelayout>=2 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs2.yposition),O, "2"); }
-        if(filelayout>=3){
+          mvprintw(L+(Fileubs2.yposition),O, "░"); }
+        if(filelayout>=3 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs3.yposition),O, "3"); }
-        if(filelayout>=4){
+          mvprintw(L+(Fileubs3.yposition),O, "░"); }
+        if(filelayout>=4 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs4.yposition),O, "4"); }
-        if(filelayout>=5){
+          mvprintw(L+(Fileubs4.yposition),O, "░"); }
+        if(filelayout>=5 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs5.yposition),O, "5"); }
+          mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } 
     if(filedivision>=2){
       for(int O=(Fileubs2.xposition); O<(Fileubs2.xlength); O++)
       { verification=filelayout;
         verify();
-        mvprintw(L, O, "6");
-        if(filelayout>=2){
+        mvprintw(L, O, "░");
+        if(filelayout>=2 && g==FALSE){
           verify();
-        mvprintw(L+(Fileubs2.yposition),O, "7"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition),O, "░"); }
+        if(filelayout>=3 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs3.yposition),O, "8"); }
-        if(filelayout>=4){
+          mvprintw(L+(Fileubs3.yposition),O, "░"); }
+        if(filelayout>=4 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs4.yposition),O, "9"); }
-        if(filelayout>=5){
+          mvprintw(L+(Fileubs4.yposition),O, "░"); }
+        if(filelayout>=5 && g==FALSE){
           verify();
-          mvprintw(L+(Fileubs5.yposition),O, "a"); }
+          mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
 
-          if(filedivision>=3){
+        if(filedivision>=3 && g==FALSE){
       for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
       { verification=filelayout*2;
         verify();
-        mvprintw(L, O, "b");
-        if(filelayout>=2){
+        mvprintw(L, O, "░");
+        if(filelayout>=2 && g==FALSE){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "c"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition),O, "░"); }
+        if(filelayout>=3 && g==FALSE){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "d"); }
-        if(filelayout>=4){
+        mvprintw(L+(Fileubs3.yposition),O, "░"); }
+        if(filelayout>=4 && g==FALSE){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "e"); }
-        if(filelayout>=5){
+        mvprintw(L+(Fileubs4.yposition),O, "░"); }
+        if(filelayout>=5 && g==FALSE){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "f"); }
+        mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
 
-      if(filedivision>=4){
+      if(filedivision>=4 && g==FALSE){
       for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
       { verification=filelayout*3;
         verify();
         mvprintw(L, O, "b");
-        if(filelayout>=2){
+        if(filelayout>=2 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs2.yposition),O, "g"); }
-        if(filelayout>=3){
+        if(filelayout>=3 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs3.yposition),O, "h"); }
-        if(filelayout>=4){
+        if(filelayout>=4 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs4.yposition),O, "i"); }
-        if(filelayout>=5){
+        if(filelayout>=5 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "o"); }
       } }
 
-if(filedivision>=5){
+if(filedivision>=5 && g==FALSE){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
       { verification=20;
         verify();
         mvprintw(L, O, "p");
-        if(filelayout>=2){
+        if(filelayout>=2 && g==FALSE){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "q"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition && g==FALSE),O, "q"); }
+        if(filelayout>=3 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs3.yposition),O, "r"); }
-        if(filelayout>=4){
+        if(filelayout>=4 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs4.yposition),O, "s"); }
-        if(filelayout>=5){
+        if(filelayout>=5 && g==FALSE){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "t"); }
       } }
@@ -292,18 +344,22 @@ void callsystem(){
   pclose(Readings);
 
   actualfile=0;
-  c=(x/4)+1;
   cou=1; 
-  for(i=0; i < index; i++){          
-
+      t=1;
+      f=1; 
+  for(i=0; i < index; i++){  
+       
+    boxesfunction();
   
- if (i == selectedfile)
+  if(selectedfile==0){invertedcordinates=0;}
+ if (i == invertedcordinates)
     { attron(COLOR_PAIR(PAIR2));}
-    else
+  else
     { attron(COLOR_PAIR(PAIR1));}
-  boxesfunction();
+  
 
   if (sizeof(options[i])>16){
+    
               char Printylonger[128];
               snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
                 for(int p= 0; Printylonger[p]!='\0'; p++){
@@ -323,8 +379,9 @@ void callsystem(){
         }
     }
     
-  if (g=TRUE){break;}
+  //if (g=TRUE){break;}
   }
+
     //c+= gap;
     //mvprintw(cou, c, "%s", options[i]);
     //c+= strlen(options[i])+gap;
@@ -340,22 +397,22 @@ void KeyCommands(){
   switch(cius){
     case KEY_RIGHT:
     if(selectedfile<((filelayout*filedivision)-filelayout))
-    {selectedfile+=filelayout;}
+    {selectedfile+=filelayout; invertedcordinates++;}
     break;
 
     case KEY_LEFT:
     if(selectedfile>=filelayout)
-    {selectedfile-=filelayout;}
+    {selectedfile-=filelayout; invertedcordinates--;}
     break;
 
     case KEY_UP:
     if(selectedfile>0)
-    {selectedfile--;}
+    {selectedfile--; invertedcordinates-=(filedivision+1);}
     break;
 
     case KEY_DOWN:
     if(selectedfile<(filelayout*filedivision)-1){
-    selectedfile++;
+    selectedfile++; invertedcordinates+=(filedivision+1);
     }
     break;
 
