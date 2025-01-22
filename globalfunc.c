@@ -8,7 +8,7 @@
 #define PAIR3 3
 //Int Variables
 int x, y; //Screen position variables
-int i, f=1, t=1; //Used to operate with fors and other things
+int i, f=1, t=1, Q=0; //Used to operate with fors and other things
 int quantity; //Probably going to delete it... IDK what it does
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
@@ -138,10 +138,12 @@ void boxesfunction(){
   borderx=((boxesdivisions-(borderval*2))-sizeof(options[i]));
 
 
-if((i%(filedivision+1))!=0){
+if((i%(filedivision))!=0){
   f++;
 }
 else{f=1; t++;}
+
+
 
   switch (f)
   {
@@ -163,9 +165,6 @@ else{f=1; t++;}
 
   case 5:
     realxubication= Fileubs5.xposition+(borderx/2);
-    break;
-
-  default:
     break;
   }
 
@@ -192,10 +191,13 @@ else{f=1; t++;}
     break;
 
   }
+
+//for(Q=0; Q<(quantity/filelayout); Q++){}
+if(t==5){t=1;}
 }
 
 void verify(){
-  mvprintw(1,1,"%d", selectedfile);
+  mvprintw(1,1,"%d", quantity);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
   verification++;
@@ -220,16 +222,16 @@ void Boxrep(){
       { verification=0;
         verify();
         mvprintw(L, O, "░");
-        if(filelayout>=2 && g==FALSE){
+        if(filelayout>=2){
           verify();
           mvprintw(L+(Fileubs2.yposition),O, "░"); }
-        if(filelayout>=3 && g==FALSE){
+        if(filelayout>=3){
           verify();
           mvprintw(L+(Fileubs3.yposition),O, "░"); }
-        if(filelayout>=4 && g==FALSE){
+        if(filelayout>=4){
           verify();
           mvprintw(L+(Fileubs4.yposition),O, "░"); }
-        if(filelayout>=5 && g==FALSE){
+        if(filelayout>=5){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } 
@@ -238,75 +240,75 @@ void Boxrep(){
       { verification=filelayout;
         verify();
         mvprintw(L, O, "░");
-        if(filelayout>=2 && g==FALSE){
+        if(filelayout>=2 ){
           verify();
         mvprintw(L+(Fileubs2.yposition),O, "░"); }
-        if(filelayout>=3 && g==FALSE){
+        if(filelayout>=3){
           verify();
           mvprintw(L+(Fileubs3.yposition),O, "░"); }
-        if(filelayout>=4 && g==FALSE){
+        if(filelayout>=4 ){
           verify();
           mvprintw(L+(Fileubs4.yposition),O, "░"); }
-        if(filelayout>=5 && g==FALSE){
+        if(filelayout>=5 ){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
 
-        if(filedivision>=3 && g==FALSE){
+    if(filedivision>=3){
       for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
       { verification=filelayout*2;
         verify();
         mvprintw(L, O, "░");
-        if(filelayout>=2 && g==FALSE){
+        if(filelayout>=2){
         verify();
         mvprintw(L+(Fileubs2.yposition),O, "░"); }
-        if(filelayout>=3 && g==FALSE){
+        if(filelayout>=3 ){
         verify();
         mvprintw(L+(Fileubs3.yposition),O, "░"); }
-        if(filelayout>=4 && g==FALSE){
+        if(filelayout>=4 ){
         verify();
         mvprintw(L+(Fileubs4.yposition),O, "░"); }
-        if(filelayout>=5 && g==FALSE){
+        if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
 
-      if(filedivision>=4 && g==FALSE){
+    if(filedivision>=4 ){
       for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
       { verification=filelayout*3;
         verify();
-        mvprintw(L, O, "b");
-        if(filelayout>=2 && g==FALSE){
+        mvprintw(L, O, "░");
+        if(filelayout>=2){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "g"); }
-        if(filelayout>=3 && g==FALSE){
+        mvprintw(L+(Fileubs2.yposition),O, "░"); }
+        if(filelayout>=3 ){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "h"); }
-        if(filelayout>=4 && g==FALSE){
+        mvprintw(L+(Fileubs3.yposition),O, "░"); }
+        if(filelayout>=4 ){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "i"); }
-        if(filelayout>=5 && g==FALSE){
+        mvprintw(L+(Fileubs4.yposition),O, "░"); }
+        if(filelayout>=5 ){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "o"); }
+        mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
 
-if(filedivision>=5 && g==FALSE){
+  if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
       { verification=20;
         verify();
-        mvprintw(L, O, "p");
-        if(filelayout>=2 && g==FALSE){
+        mvprintw(L, O, "░");
+        if(filelayout>=2){
         verify();
-        mvprintw(L+(Fileubs2.yposition && g==FALSE),O, "q"); }
-        if(filelayout>=3 && g==FALSE){
+        mvprintw(L+(Fileubs2.yposition),O, "░"); }
+        if(filelayout>=3 ){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "r"); }
-        if(filelayout>=4 && g==FALSE){
+        mvprintw(L+(Fileubs3.yposition),O, "░"); }
+        if(filelayout>=4 ){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "s"); }
-        if(filelayout>=5 && g==FALSE){
+        mvprintw(L+(Fileubs4.yposition),O, "░"); }
+        if(filelayout>=5 ){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "t"); }
+        mvprintw(L+(Fileubs5.yposition),O, "░"); }
       } }
       //When there's more fors... i must add an IF to
       //call the verification of filedivision
@@ -348,7 +350,7 @@ void callsystem(){
       t=1;
       f=1; 
   for(i=0; i < index; i++){  
-       
+    quantity=index;   
     boxesfunction();
   
   if(selectedfile==0){invertedcordinates=0;}
@@ -407,12 +409,12 @@ void KeyCommands(){
 
     case KEY_UP:
     if(selectedfile>0)
-    {selectedfile--; invertedcordinates-=(filedivision+1);}
+    {selectedfile--; invertedcordinates-=(filedivision);}
     break;
 
     case KEY_DOWN:
     if(selectedfile<(filelayout*filedivision)-1){
-    selectedfile++; invertedcordinates+=(filedivision+1);
+    selectedfile++; invertedcordinates+=(filedivision);
     }
     break;
 
