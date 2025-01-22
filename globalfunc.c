@@ -9,7 +9,7 @@
 //Int Variables
 int x, y; //Screen position variables
 int i, f=1, t=1, Q=0; //Used to operate with fors and other things
-int quantity; //Probably going to delete it... IDK what it does
+int quantity, page, actualpage=0, dbfilesperpage=0, filesperpage;
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
@@ -47,6 +47,8 @@ void definitions()
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
   init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
   init_pair(PAIR3, COLOR_WHITE, COLOR_YELLOW);
+
+  
 }
 
 void blackout()
@@ -85,7 +87,7 @@ txright= (x/4)*3;
 if((round(txright/filedivision))<20 && filedivision>1){
   filedivision--;
 }
-if((txright/filedivision)>=26){
+if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
@@ -98,6 +100,8 @@ if((y/filelayout)>14){
  boxesdivisions= 18;
 initboxes= (x/4)+1;
 ygaps= round((y/5));
+
+
 
 //definition of Fileubs1
 Fileubs1.xposition= initboxes;
@@ -136,14 +140,7 @@ void boxesfunction(){
   
   borderval=1;
   borderx=((boxesdivisions-(borderval*2))-sizeof(options[i]));
-
-
-if((i%(filedivision))!=0){
-  f++;
-}
-else{f=1; t++;}
-
-
+  int files= i+1;
 
   switch (f)
   {
@@ -170,34 +167,42 @@ else{f=1; t++;}
 
   switch(t){
 
-    case 1:
-    realyubication= 44+cou; //5
+    case 5:
+    realyubication= 46+cou; //5
     break;
 
-    case 2:
+    case 1:
     realyubication= 7+cou; //1
     break;
 
-    case 3:
+    case 2:
     realyubication= 17+cou; //2
     break;
 
-    case 4:
+    case 3:
     realyubication= 27+cou; //3
     break;
 
-    case 5:
+    case 4:
     realyubication= 37+cou; //4
     break;
 
+    default: 
+    g=true;
+
   }
+  if((files%filedivision)==0){
+  f=1; t++;
+}
+
+else{f++;}
 
 //for(Q=0; Q<(quantity/filelayout); Q++){}
-if(t==5){t=1;}
+
 }
 
 void verify(){
-  mvprintw(1,1,"%d", quantity);
+  mvprintw(1,1,"%d", dbfilesperpage);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
   verification++;
@@ -206,8 +211,7 @@ else{
   attron(COLOR_PAIR(PAIR1));
   verification++;
 }
-if (quantity==verification){g=TRUE;}
-else{g=FALSE;}
+
 }
 
 void Boxrep(){
@@ -345,14 +349,24 @@ void callsystem(){
   }
   pclose(Readings);
 
+  filesperpage= (filedivision*filelayout)*actualpage;
+  dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
+
+  if(dbfilesperpage-quantity>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+
+    for(page=0; page<((quantity/(filedivision*filelayout))-1); page++){
+  }
+
   actualfile=0;
   cou=1; 
       t=1;
       f=1; 
-  for(i=0; i < index; i++){  
+  for(i=(0+filesperpage); i < dbfilesperpage; i++){  
     quantity=index;   
     boxesfunction();
   
+    //if (g=TRUE){i=0;}
+
   if(selectedfile==0){invertedcordinates=0;}
  if (i == invertedcordinates)
     { attron(COLOR_PAIR(PAIR2));}
@@ -362,11 +376,11 @@ void callsystem(){
 
   if (sizeof(options[i])>16){
     
-              char Printylonger[128];
-              snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
-                for(int p= 0; Printylonger[p]!='\0'; p++){
-                  mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
-                  if((p%16)==0){cou++;}
+    char Printylonger[128];
+    snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
+    for(int p= 0; Printylonger[p]!='\0'; p++){
+    mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
+      if((p%16)==0){cou++;}
                 }
                 }
 
@@ -381,7 +395,7 @@ void callsystem(){
         }
     }
     
-  //if (g=TRUE){break;}
+  
   }
 
     //c+= gap;
@@ -419,6 +433,12 @@ void KeyCommands(){
     break;
 
   }
+
+}
+
+
+#endif
+
 
 }
 
