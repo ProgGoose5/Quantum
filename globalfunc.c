@@ -20,7 +20,7 @@ int verification=0;
 int invertedcordinates= 0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[]={"","/home/goose"};
+char* directory[]={"","/home/goose/examplefolder"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
@@ -91,10 +91,10 @@ if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
-if((y/filelayout)<14 && filelayout>1){
+if((y/filelayout)<12 && filelayout>1){
   filelayout--;
 }
-if((y/filelayout)>16 && filelayout<5){
+if((y/filelayout)>14 && filelayout<5){
   filelayout++;
 }
  boxesdivisions= 18;
@@ -206,6 +206,7 @@ void verify(){
   mvprintw(2,1,"%d", filelayout);
   mvprintw(3,1,"selectedfile %d", selectedfile);
   mvprintw(4,1,"invertedcordinates %d", invertedcordinates);
+  mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
   verification++;
@@ -415,8 +416,9 @@ void KeyCommands(){
   int cius= getch();
   switch(cius){
     case KEY_RIGHT:
+    if(invertedcordinates+1 != dbfilesperpage){
     if(selectedfile<((filelayout*filedivision)-filelayout))
-    {selectedfile+=filelayout; invertedcordinates++;}
+    {selectedfile+=filelayout; invertedcordinates++;}}
     break;
 
     case KEY_LEFT:
@@ -431,13 +433,28 @@ void KeyCommands(){
       break;
 
     case KEY_DOWN:
+    if(selectedfile+1 != dbfilesperpage){
     if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
     if(selectedfile<(filelayout*filedivision)-1){
     selectedfile++; invertedcordinates+=(filedivision);
-    }}
+    }}}
     break;
 
+    case KEY_F(1):
+    if(actualpage>0) {actualpage--;}
+    break;
+
+    case KEY_F(2):
+    if(actualpage<page) {actualpage++;}
+    break;
   }
+
+
+}
+
+
+#endif
+
 
 }
 
