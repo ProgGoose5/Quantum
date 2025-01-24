@@ -8,8 +8,8 @@
 #define PAIR3 3
 //Int Variables
 int x, y; //Screen position variables
-int i, f=1, t=1; //Used to operate with fors and other things
-int quantity; //Probably going to delete it... IDK what it does
+int i, f=1, t=1, Q=0; //Used to operate with fors and other things
+int quantity, page, actualpage=0, dbfilesperpage=0, filesperpage;
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
@@ -17,13 +17,14 @@ int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
 int NumDir= 0;
 int verification=0;
-int c= 0;
-int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication;
+int invertedcordinates= 0;
+int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[]={"","/home/goose"};
+char* directory[]={"","/home/goose/examplefolder"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
+char *boxChar = " ";
 
 bool g=FALSE;
 
@@ -47,6 +48,8 @@ void definitions()
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
   init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
   init_pair(PAIR3, COLOR_WHITE, COLOR_YELLOW);
+
+  
 }
 
 void blackout()
@@ -78,6 +81,7 @@ if(lns != LINES || cols != COLS){
 
 }
 
+//The definitions of various boxes
 void boxesdef() {
 
 txright= (x/4)*3;
@@ -85,19 +89,21 @@ txright= (x/4)*3;
 if((round(txright/filedivision))<20 && filedivision>1){
   filedivision--;
 }
-if((txright/filedivision)>=26){
+if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
 if((y/filelayout)<10 && filelayout>1){
   filelayout--;
 }
-if((y/filelayout)>14){
+if((y/filelayout)>12 && filelayout<5){
   filelayout++;
 }
  boxesdivisions= 18;
 initboxes= (x/4)+1;
 ygaps= round((y/5));
+
+
 
 //definition of Fileubs1
 Fileubs1.xposition= initboxes;
@@ -132,19 +138,79 @@ Fileubs5.xlength= boxesdivisions+Fileubs5.xposition;
 
 }
 
+//The functionality of the boxes (Not mistake with rep)
 void boxesfunction(){
   
   borderval=1;
-  borderx= ((boxesdivisions-(borderval*2))-sizeof(options[i]));
-  realxubication= (initboxes*f)+(borderx/2); //The real location that should be printed
-  realyubication= ((dirbar+5)*t)+cou;
-  if(i%filedivision!=0){f++;}
-  else{f=1; t++;}
-  if(t%(filelayout+1)){t=1; g=TRUE;}
+  borderx=((boxesdivisions-(borderval*2))-sizeof(options[i]));
+  int files= i+1;
+
+  switch (f)
+  {
+  case 1:
+    realxubication= Fileubs1.xposition+(borderx/2);
+    break;
+  
+  case 2:
+    realxubication= Fileubs2.xposition+(borderx/2);
+    break;
+
+  case 3: 
+    realxubication= Fileubs3.xposition+(borderx/2);
+    break;
+
+  case 4:
+    realxubication= Fileubs4.xposition+(borderx/2);
+    break;
+
+  case 5:
+    realxubication= Fileubs5.xposition+(borderx/2);
+    break;
+  }
+
+  switch(t){
+
+    case 5:
+    realyubication= 46+cou; //5
+    break;
+
+    case 1:
+    realyubication= 7+cou; //1
+    break;
+
+    case 2:
+    realyubication= 17+cou; //2
+    break;
+
+    case 3:
+    realyubication= 27+cou; //3
+    break;
+
+    case 4:
+    realyubication= 37+cou; //4
+    break;
+
+    default: 
+    g=true;
+
+  }
+  if((files%filedivision)==0){
+  f=1; t++;
 }
 
+else{f++;}
+
+//for(Q=0; Q<(quantity/filelayout); Q++){}
+
+}
+
+//Made for executing upon every box printed.
 void verify(){
-  mvprintw(1,1,"%d", selectedfile);
+  mvprintw(1,1,"dbfiles %d", dbfilesperpage);
+  mvprintw(2,1,"quantity %d", quantity);
+  mvprintw(3,1,"fppage %d", filesperpage);
+  mvprintw(4,1,"selectedfile %d", selectedfile);
+  mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
   verification++;
@@ -156,6 +222,7 @@ else{
 
 }
 
+//The printing of each box.
 void Boxrep(){
   
   for(int G= 1; G<=5; G++){
@@ -167,94 +234,94 @@ void Boxrep(){
       for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
       { verification=0;
         verify();
-        mvprintw(L, O, "1");
+        mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
           verify();
-          mvprintw(L+(Fileubs2.yposition),O, "2"); }
+          mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
         if(filelayout>=3){
           verify();
-          mvprintw(L+(Fileubs3.yposition),O, "3"); }
+          mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
         if(filelayout>=4){
           verify();
-          mvprintw(L+(Fileubs4.yposition),O, "4"); }
+          mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
         if(filelayout>=5){
           verify();
-          mvprintw(L+(Fileubs5.yposition),O, "5"); }
+          mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
       } 
     if(filedivision>=2){
       for(int O=(Fileubs2.xposition); O<(Fileubs2.xlength); O++)
       { verification=filelayout;
         verify();
-        mvprintw(L, O, "6");
-        if(filelayout>=2){
+        mvprintw(L, O, "%s", boxChar);
+        if(filelayout>=2 ){
           verify();
-        mvprintw(L+(Fileubs2.yposition),O, "7"); }
+        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
         if(filelayout>=3){
           verify();
-          mvprintw(L+(Fileubs3.yposition),O, "8"); }
-        if(filelayout>=4){
+          mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
+        if(filelayout>=4 ){
           verify();
-          mvprintw(L+(Fileubs4.yposition),O, "9"); }
-        if(filelayout>=5){
+          mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
+        if(filelayout>=5 ){
           verify();
-          mvprintw(L+(Fileubs5.yposition),O, "a"); }
+          mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
       } }
 
-          if(filedivision>=3){
+    if(filedivision>=3){
       for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
       { verification=filelayout*2;
         verify();
-        mvprintw(L, O, "b");
+        mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "c"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
+        if(filelayout>=3 ){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "d"); }
-        if(filelayout>=4){
+        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
+        if(filelayout>=4 ){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "e"); }
-        if(filelayout>=5){
+        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
+        if(filelayout>=5 ){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "f"); }
+        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
       } }
 
-      if(filedivision>=4){
+    if(filedivision>=4 ){
       for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
       { verification=filelayout*3;
         verify();
-        mvprintw(L, O, "b");
+        mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "g"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
+        if(filelayout>=3 ){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "h"); }
-        if(filelayout>=4){
+        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
+        if(filelayout>=4 ){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "i"); }
-        if(filelayout>=5){
+        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
+        if(filelayout>=5 ){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "o"); }
+        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
       } }
 
-if(filedivision>=5){
+  if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
       { verification=20;
         verify();
-        mvprintw(L, O, "p");
+        mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
-        mvprintw(L+(Fileubs2.yposition),O, "q"); }
-        if(filelayout>=3){
+        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
+        if(filelayout>=3 ){
         verify();
-        mvprintw(L+(Fileubs3.yposition),O, "r"); }
-        if(filelayout>=4){
+        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
+        if(filelayout>=4 ){
         verify();
-        mvprintw(L+(Fileubs4.yposition),O, "s"); }
-        if(filelayout>=5){
+        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
+        if(filelayout>=5 ){
         verify();
-        mvprintw(L+(Fileubs5.yposition),O, "t"); }
+        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
       } }
       //When there's more fors... i must add an IF to
       //call the verification of filedivision
@@ -265,8 +332,7 @@ if(filedivision>=5){
 
 } }
 
-
-
+//System and apps representation function.
 void callsystem(){
   directory[0]= cdcom;
   char combinedDir[256];
@@ -291,24 +357,36 @@ void callsystem(){
   }
   pclose(Readings);
 
-  actualfile=0;
-  c=(x/4)+1;
-  cou=1; 
-  for(i=0; i < index; i++){          
+  filesperpage= (filedivision*filelayout)*actualpage;
+  dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
+  if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+    for(page=0; page<((index/(filedivision*filelayout))-1); page++){
+  }
 
+  actualfile=0;
+  cou=1; 
+      t=1;
+      f=1; 
+  for(i=(0+filesperpage); i < dbfilesperpage; i++){  
+    quantity=index;   
+    boxesfunction();
   
- if (i == selectedfile)
+    //if (g=TRUE){i=0;}
+
+  if(selectedfile==0){invertedcordinates=0;}
+ if (i == (invertedcordinates+filesperpage))
     { attron(COLOR_PAIR(PAIR2));}
-    else
+  else
     { attron(COLOR_PAIR(PAIR1));}
-  boxesfunction();
+  
 
   if (sizeof(options[i])>16){
-              char Printylonger[128];
-              snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
-                for(int p= 0; Printylonger[p]!='\0'; p++){
-                  mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
-                  if((p%16)==0){cou++;}
+    
+    char Printylonger[128];
+    snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
+    for(int p= 0; Printylonger[p]!='\0'; p++){
+    mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
+      if((p%16)==0){cou++;}
                 }
                 }
 
@@ -323,8 +401,9 @@ void callsystem(){
         }
     }
     
-  if (g=TRUE){break;}
+  
   }
+
     //c+= gap;
     //mvprintw(cou, c, "%s", options[i]);
     //c+= strlen(options[i])+gap;
@@ -335,33 +414,59 @@ void callsystem(){
   refresh();
   }
 
+//Keyboard reading.
 void KeyCommands(){
   int cius= getch();
   switch(cius){
     case KEY_RIGHT:
+    if((invertedcordinates+1+filesperpage) < dbfilesperpage){
     if(selectedfile<((filelayout*filedivision)-filelayout))
-    {selectedfile+=filelayout;}
+    {selectedfile+=filelayout; invertedcordinates++;}}
+    else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
     break;
 
     case KEY_LEFT:
     if(selectedfile>=filelayout)
-    {selectedfile-=filelayout;}
+    {selectedfile-=filelayout; invertedcordinates--;}
+    else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;} 
     break;
 
     case KEY_UP:
-    if(selectedfile>0)
-    {selectedfile--;}
-    break;
+      if(((selectedfile)%(filelayout))!= 0 || selectedfile==0){
+      if(selectedfile>0)
+      {selectedfile--; invertedcordinates-=(filedivision);}}
+      else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;}
+      break;
 
     case KEY_DOWN:
+    if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
+    if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
     if(selectedfile<(filelayout*filedivision)-1){
-    selectedfile++;
-    }
+    selectedfile++; invertedcordinates+=(filedivision);
+    }}}
+    else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
     break;
 
+    case KEY_F(1):
+    if(actualpage>0) {actualpage--;}
+    break;
+
+    case KEY_F(2):
+    if(actualpage<page) {actualpage++;}
+    break;
   }
+
 
 }
 
+//Refresher of variable values.
+void alwaysrefresh(){
+filesperpage= (filedivision*filelayout)*actualpage;
+dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
+page= (quantity/(filedivision*filelayout));
+
+  if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+}
 
 #endif
+
