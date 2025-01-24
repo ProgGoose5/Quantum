@@ -93,10 +93,12 @@ if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
-if((y/filelayout)<10 && filelayout>1){
+if((y/filelayout)<12 && filelayout>1){
   filelayout--;
 }
+
 if((y/filelayout)>12 && filelayout<5){
+
   filelayout++;
 }
  boxesdivisions= 18;
@@ -206,10 +208,12 @@ else{f++;}
 
 //Made for executing upon every box printed.
 void verify(){
+
   mvprintw(1,1,"dbfiles %d", dbfilesperpage);
   mvprintw(2,1,"quantity %d", quantity);
   mvprintw(3,1,"fppage %d", filesperpage);
   mvprintw(4,1,"selectedfile %d", selectedfile);
+
   mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
@@ -234,6 +238,7 @@ void Boxrep(){
       for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
       { verification=0;
         verify();
+
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
           verify();
@@ -247,11 +252,13 @@ void Boxrep(){
         if(filelayout>=5){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
+
       } 
     if(filedivision>=2){
       for(int O=(Fileubs2.xposition); O<(Fileubs2.xlength); O++)
       { verification=filelayout;
         verify();
+
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2 ){
           verify();
@@ -265,12 +272,14 @@ void Boxrep(){
         if(filelayout>=5 ){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
+
       } }
 
     if(filedivision>=3){
       for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
       { verification=filelayout*2;
         verify();
+
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -284,12 +293,14 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
+
       } }
 
     if(filedivision>=4 ){
       for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
       { verification=filelayout*3;
         verify();
+
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -303,12 +314,14 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
+
       } }
 
   if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
       { verification=20;
         verify();
+
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -322,6 +335,7 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
+
       } }
       //When there's more fors... i must add an IF to
       //call the verification of filedivision
@@ -359,8 +373,10 @@ void callsystem(){
 
   filesperpage= (filedivision*filelayout)*actualpage;
   dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
+
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
     for(page=0; page<((index/(filedivision*filelayout))-1); page++){
+
   }
 
   actualfile=0;
@@ -374,7 +390,9 @@ void callsystem(){
     //if (g=TRUE){i=0;}
 
   if(selectedfile==0){invertedcordinates=0;}
+
  if (i == (invertedcordinates+filesperpage))
+
     { attron(COLOR_PAIR(PAIR2));}
   else
     { attron(COLOR_PAIR(PAIR1));}
@@ -419,32 +437,39 @@ void KeyCommands(){
   int cius= getch();
   switch(cius){
     case KEY_RIGHT:
+
     if((invertedcordinates+1+filesperpage) < dbfilesperpage){
     if(selectedfile<((filelayout*filedivision)-filelayout))
     {selectedfile+=filelayout; invertedcordinates++;}}
     else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+
     break;
 
     case KEY_LEFT:
     if(selectedfile>=filelayout)
     {selectedfile-=filelayout; invertedcordinates--;}
     else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;} 
+
     break;
 
     case KEY_UP:
       if(((selectedfile)%(filelayout))!= 0 || selectedfile==0){
       if(selectedfile>0)
       {selectedfile--; invertedcordinates-=(filedivision);}}
+
       else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;}
       break;
 
     case KEY_DOWN:
     if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
+
     if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
     if(selectedfile<(filelayout*filedivision)-1){
     selectedfile++; invertedcordinates+=(filedivision);
     }}}
+
     else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+
     break;
 
     case KEY_F(1):
@@ -455,6 +480,8 @@ void KeyCommands(){
     if(actualpage<page) {actualpage++;}
     break;
   }
+
+
 
 
 }
