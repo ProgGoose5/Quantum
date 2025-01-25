@@ -15,16 +15,17 @@ int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
 int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
-int NumDir= 0;
+int NumDir= 3;
 int verification=0;
 int invertedcordinates= 0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[]={"","/home/goose/examplefolder"};
+char* directory[300]={"","/home", "/goose", "/Apps"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
 char *boxChar = " ";
+char combinedDir[4000];
 
 bool g=FALSE;
 
@@ -93,12 +94,10 @@ if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
-if((y/filelayout)<12 && filelayout>1){
+if((y/filelayout)<10 && filelayout>1){
   filelayout--;
 }
-
 if((y/filelayout)>12 && filelayout<5){
-
   filelayout++;
 }
  boxesdivisions= 18;
@@ -208,12 +207,10 @@ else{f++;}
 
 //Made for executing upon every box printed.
 void verify(){
-
   mvprintw(1,1,"dbfiles %d", dbfilesperpage);
   mvprintw(2,1,"quantity %d", quantity);
   mvprintw(3,1,"fppage %d", filesperpage);
-  mvprintw(4,1,"selectedfile %d", selectedfile);
-
+  mvprintw(4,1,"%s", combinedDir);
   mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
@@ -238,7 +235,6 @@ void Boxrep(){
       for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
       { verification=0;
         verify();
-
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
           verify();
@@ -252,13 +248,11 @@ void Boxrep(){
         if(filelayout>=5){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-
       } 
     if(filedivision>=2){
       for(int O=(Fileubs2.xposition); O<(Fileubs2.xlength); O++)
       { verification=filelayout;
         verify();
-
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2 ){
           verify();
@@ -272,14 +266,12 @@ void Boxrep(){
         if(filelayout>=5 ){
           verify();
           mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-
       } }
 
     if(filedivision>=3){
       for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
       { verification=filelayout*2;
         verify();
-
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -293,14 +285,12 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-
       } }
 
     if(filedivision>=4 ){
       for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
       { verification=filelayout*3;
         verify();
-
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -314,14 +304,12 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-
       } }
 
   if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
       { verification=20;
         verify();
-
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
         verify();
@@ -335,7 +323,6 @@ void Boxrep(){
         if(filelayout>=5 ){
         verify();
         mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-
       } }
       //When there's more fors... i must add an IF to
       //call the verification of filedivision
@@ -349,12 +336,25 @@ void Boxrep(){
 //System and apps representation function.
 void callsystem(){
   directory[0]= cdcom;
-  char combinedDir[256];
-  snprintf(combinedDir, sizeof(combinedDir), "%s%s", directory[0], directory[1]);
-    char lscom[256];
-    snprintf(lscom, sizeof(lscom), "ls %s", directory[1]);
+  
+  
+  
+  char lscom[5000];
+
+    
+    combinedDir[0] = '\0';
+    for(int sk= 1; directory[sk]!=NULL; sk++){
+      NumDir= sk+1;
+      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(combinedDir) - 1);
+    }
+    //snprintf(cdcom, 256, "cd %s", combinedDir);
+    snprintf(lscom, 512, "ls %s", combinedDir);
+    //printw("%s", combinedDir);
+    
+
+
   //mvprintw(3,7, "%d", combinedDir);
-  system(combinedDir);
+  system(cdcom);
   
   FILE* Readings = popen(lscom, "r");
   if (Readings == NULL) {
@@ -373,10 +373,8 @@ void callsystem(){
 
   filesperpage= (filedivision*filelayout)*actualpage;
   dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
-
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
     for(page=0; page<((index/(filedivision*filelayout))-1); page++){
-
   }
 
   actualfile=0;
@@ -390,9 +388,7 @@ void callsystem(){
     //if (g=TRUE){i=0;}
 
   if(selectedfile==0){invertedcordinates=0;}
-
  if (i == (invertedcordinates+filesperpage))
-
     { attron(COLOR_PAIR(PAIR2));}
   else
     { attron(COLOR_PAIR(PAIR1));}
@@ -437,51 +433,46 @@ void KeyCommands(){
   int cius= getch();
   switch(cius){
     case KEY_RIGHT:
-
     if((invertedcordinates+1+filesperpage) < dbfilesperpage){
     if(selectedfile<((filelayout*filedivision)-filelayout))
     {selectedfile+=filelayout; invertedcordinates++;}}
     else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
-
     break;
 
     case KEY_LEFT:
     if(selectedfile>=filelayout)
     {selectedfile-=filelayout; invertedcordinates--;}
     else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;} 
-
     break;
 
     case KEY_UP:
       if(((selectedfile)%(filelayout))!= 0 || selectedfile==0){
       if(selectedfile>0)
       {selectedfile--; invertedcordinates-=(filedivision);}}
-
       else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;}
       break;
 
     case KEY_DOWN:
     if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
-
     if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
     if(selectedfile<(filelayout*filedivision)-1){
     selectedfile++; invertedcordinates+=(filedivision);
     }}}
-
     else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
-
     break;
 
     case KEY_F(1):
-    if(actualpage>0) {actualpage--;}
+    directory[NumDir-1]= NULL;
+    NumDir--;
     break;
 
-    case KEY_F(2):
-    if(actualpage<page) {actualpage++;}
+    case KEY_F(3):
+    char Directory[256];
+    snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
+    directory[NumDir]= strdup(Directory);
+    NumDir++;
     break;
   }
-
-
 
 
 }
@@ -493,7 +484,14 @@ dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
 page= (quantity/(filedivision*filelayout));
 
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+
+    for(int sk= 1; directory[sk]!=NULL; sk++){
+      NumDir= sk+1;
+      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(combinedDir) - 1);
+    }
+
 }
 
 #endif
+
 
