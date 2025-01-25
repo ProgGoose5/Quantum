@@ -15,16 +15,17 @@ int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
 int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
-int NumDir= 0;
+int NumDir= 3;
 int verification=0;
 int invertedcordinates= 0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[300]={"","/home", "/goose"};
+char* directory[300]={"","/home", "/goose", "/Apps"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
 char *boxChar = " ";
+char combinedDir[4000];
 
 bool g=FALSE;
 
@@ -209,7 +210,7 @@ void verify(){
   mvprintw(1,1,"dbfiles %d", dbfilesperpage);
   mvprintw(2,1,"quantity %d", quantity);
   mvprintw(3,1,"fppage %d", filesperpage);
-  mvprintw(4,1,"selectedfile %d", selectedfile);
+  mvprintw(4,1,"%s", combinedDir);
   mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
@@ -337,10 +338,10 @@ void callsystem(){
   directory[0]= cdcom;
   
   
-  char combinedDir[256];
-  char lscom[512];
+  
+  char lscom[5000];
 
-    move(10,1);
+    
     combinedDir[0] = '\0';
     for(int sk= 1; directory[sk]!=NULL; sk++){
       NumDir= sk+1;
@@ -461,17 +462,15 @@ void KeyCommands(){
     break;
 
     case KEY_F(1):
-    if(actualpage>0) {actualpage--;}
-    break;
-
-    case KEY_F(2):
-    if(actualpage<page) {actualpage++;}
+    directory[NumDir-1]= NULL;
+    NumDir--;
     break;
 
     case KEY_F(3):
     char Directory[256];
     snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
     directory[NumDir]= strdup(Directory);
+    NumDir++;
     break;
   }
 
@@ -485,7 +484,14 @@ dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
 page= (quantity/(filedivision*filelayout));
 
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+
+    for(int sk= 1; directory[sk]!=NULL; sk++){
+      NumDir= sk+1;
+      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(combinedDir) - 1);
+    }
+
 }
 
 #endif
+
 
