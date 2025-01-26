@@ -15,12 +15,12 @@ int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
 int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
-int NumDir;
+int NumDir=2;
 int verification=0;
 int invertedcordinates= 0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[300]={"","/home", "/goose", "/Apps"};
+char* directory[300]={"","/"};
 //Char Variables
 char* cdcom= "cd ";
 char* options[1000] = {" "};
@@ -207,11 +207,7 @@ else{f++;}
 
 //Made for executing upon every box printed.
 void verify(){
-  mvprintw(1,1,"dbfiles %d", dbfilesperpage);
-  mvprintw(2,1,"quantity %d", quantity);
-  mvprintw(3,1,"fppage %d", filesperpage);
-  mvprintw(14,1,"%s", combinedDir);
-  mvprintw(5,1, "Pages %d/%d",actualpage, page);
+
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
   verification++;
@@ -340,9 +336,8 @@ void callsystem(){
  
   memset(combinedDir, 0, sizeof(combinedDir));
     for(int sk= 1; sk<NumDir; sk++){
-      NumDir=sk;
       if(directory[sk]!= NULL){
-      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(directory[sk]) );
+      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(directory[sk])-1);
       }
     }
 
@@ -462,15 +457,19 @@ void KeyCommands(){
     break;
 
     case KEY_F(1):
-    directory[NumDir-1]= NULL;
+    directory[NumDir]= NULL;
     NumDir--;
     break;
 
     case KEY_F(3):
+    {
     char Directory[256];
+    char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
+    if (newline) *newline = '\0';
     snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
     directory[NumDir]= strdup(Directory);
-          strncat(combinedDir, directory[NumDir], sizeof(combinedDir) - strlen(directory[NumDir]) );
+    NumDir++;
+    }
     break;
   }
 
@@ -479,18 +478,15 @@ void KeyCommands(){
 
 //Refresher of variable values.
 void alwaysrefresh(){
-filesperpage= (filedivision*filelayout)*actualpage;
-dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
-page= (quantity/(filedivision*filelayout));
+  filesperpage= (filedivision*filelayout)*actualpage;
+  dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
+  page= (quantity/(filedivision*filelayout));
 
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
 
+    mvprintw(1,((x/4)+1),"%s", combinedDir);
+    mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
     
-
-}
-
-#endif
-
 
 }
 
