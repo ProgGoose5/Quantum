@@ -15,7 +15,7 @@ int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou; 
 int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
-int NumDir= 3;
+int NumDir;
 int verification=0;
 int invertedcordinates= 0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
@@ -210,7 +210,7 @@ void verify(){
   mvprintw(1,1,"dbfiles %d", dbfilesperpage);
   mvprintw(2,1,"quantity %d", quantity);
   mvprintw(3,1,"fppage %d", filesperpage);
-  mvprintw(4,1,"%s", combinedDir);
+  mvprintw(14,1,"%s", combinedDir);
   mvprintw(5,1, "Pages %d/%d",actualpage, page);
 if(verification==selectedfile){
   attron(COLOR_PAIR(PAIR2));
@@ -336,19 +336,19 @@ void Boxrep(){
 //System and apps representation function.
 void callsystem(){
   directory[0]= cdcom;
-  
-  
-  
   char lscom[5000];
-
-    
-    combinedDir[0] = '\0';
-    for(int sk= 1; directory[sk]!=NULL; sk++){
-      NumDir= sk+1;
-      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(combinedDir) - 1);
+ 
+  memset(combinedDir, 0, sizeof(combinedDir));
+    for(int sk= 1; sk<NumDir; sk++){
+      NumDir=sk;
+      if(directory[sk]!= NULL){
+      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(directory[sk]) );
+      }
     }
+
+
     //snprintf(cdcom, 256, "cd %s", combinedDir);
-    snprintf(lscom, 512, "ls %s", combinedDir);
+    snprintf(lscom, sizeof(combinedDir), "ls %s", combinedDir);
     //printw("%s", combinedDir);
     
 
@@ -470,7 +470,7 @@ void KeyCommands(){
     char Directory[256];
     snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
     directory[NumDir]= strdup(Directory);
-    NumDir++;
+          strncat(combinedDir, directory[NumDir], sizeof(combinedDir) - strlen(directory[NumDir]) );
     break;
   }
 
@@ -485,10 +485,12 @@ page= (quantity/(filedivision*filelayout));
 
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
 
-    for(int sk= 1; directory[sk]!=NULL; sk++){
-      NumDir= sk+1;
-      strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(combinedDir) - 1);
-    }
+    
+
+}
+
+#endif
+
 
 }
 
