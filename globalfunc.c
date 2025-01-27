@@ -12,7 +12,7 @@ int i, f=1, t=1, Q=0; //Used to operate with fors and other things
 int quantity, page, actualpage=0, dbfilesperpage=0, filesperpage;
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
-int cou; 
+int cou=0; 
 int ygaps, gap;
 int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
 int NumDir=2;
@@ -387,17 +387,25 @@ void callsystem(){
     { attron(COLOR_PAIR(PAIR2));}
   else
     { attron(COLOR_PAIR(PAIR1));}
-  
 
-  if (sizeof(options[i])>16){
-    
+    char* Printyan= options[i];
     char Printylonger[128];
-    snprintf(Printylonger, sizeof(Printylonger), "%s", options[i]);
-    for(int p= 0; Printylonger[p]!='\0'; p++){
-    mvprintw(realyubication, realxubication, "%s", Printylonger[p]);
-      if((p%16)==0){cou++;}
-                }
-                }
+
+       strcpy(Printylonger, Printyan);
+
+ int Nah= strlen(Printylonger);
+ mvprintw(1,1, "%d", Nah );
+
+  if (Nah>16){
+    
+ 
+    for(int p = 0; Printylonger[p] != '\0'; p++) {
+      if(isalpha(Printylonger[p])){
+      mvprintw(realyubication, realxubication + (p % 10), "%c", Printylonger[p]);
+      if ((p + 1) % 10 == 0) {
+        realyubication++;
+      }}}
+  }
 
   else{
     char Printy[16];
@@ -417,7 +425,6 @@ void callsystem(){
     //mvprintw(cou, c, "%s", options[i]);
     //c+= strlen(options[i])+gap;
   
-
 
   attron(COLOR_PAIR(PAIR1));
   refresh();
@@ -491,5 +498,3 @@ void alwaysrefresh(){
 }
 
 #endif
-
-
