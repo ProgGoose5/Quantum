@@ -55,9 +55,9 @@ void definitions()
 
 void blackout()
 {
- for(int i=-2; i<=y; i++){
+ for(i=-2; i<=y; i++){
    for(int j=-2; j<=x+2; j++){
-      PAIR1;
+      attron(COLOR_PAIR(PAIR1));
       mvprintw(i, j, " ");
         }
     }
@@ -68,7 +68,7 @@ void Resizing(){
   char lines[12]= "tput lines"; 
   char columns[12]="tput cols"; 
   //Defining variables to copy the result of the commands
-  int lns, cols;
+  int lns = 0, cols = 0;
   FILE* lines_fp = popen(lines, "r"); //Calls the command into Bash and Reads the results.
   FILE* columns_fp = popen(columns, "r"); //Same.
 
@@ -102,7 +102,7 @@ if((y/filelayout)>12 && filelayout<5){
 }
  boxesdivisions= 18;
 initboxes= (x/4)+1;
-ygaps= round((y/5));
+ygaps= (int)round((y/5));
 
 
 
@@ -141,55 +141,59 @@ Fileubs5.xlength= boxesdivisions+Fileubs5.xposition;
 
 //The functionality of the boxes (Not mistake with rep)
 void boxesfunction(){
-  
+
+  int auxiliarstrlen= (int)strlen(options[i]);
   borderval=1;
-  borderx=((boxesdivisions-(borderval*2))-sizeof(options[i]));
+    if(auxiliarstrlen<8){
+      borderx=((boxesdivisions-(borderval*2))-(auxiliarstrlen));
+    }
+    else{borderx=((boxesdivisions-(borderval*2))-8);}
   int files= i+1;
 
   switch (f)
   {
-  case 1:
-    realxubication= Fileubs1.xposition+(borderx/2);
-    break;
+    case 1:
+      realxubication= Fileubs1.xposition+(borderx/2);
+      break;
   
-  case 2:
-    realxubication= Fileubs2.xposition+(borderx/2);
-    break;
+    case 2:
+      realxubication= Fileubs2.xposition+(borderx/2);
+      break;
 
-  case 3: 
-    realxubication= Fileubs3.xposition+(borderx/2);
-    break;
+    case 3: 
+      realxubication= Fileubs3.xposition+(borderx/2);
+      break;
 
-  case 4:
-    realxubication= Fileubs4.xposition+(borderx/2);
-    break;
+    case 4:
+      realxubication= Fileubs4.xposition+(borderx/2);
+      break;
 
-  case 5:
-    realxubication= Fileubs5.xposition+(borderx/2);
-    break;
+    case 5:
+      realxubication= Fileubs5.xposition+(borderx/2);
+      break;
   }
 
   switch(t){
 
     case 5:
-    realyubication= 46+cou; //5
-    break;
+      realyubication= 47+cou; //5
+      break;
 
     case 1:
-    realyubication= 7+cou; //1
-    break;
+      realyubication= 7+cou; //1
+      break;
 
     case 2:
-    realyubication= 17+cou; //2
-    break;
+      realyubication= 17+cou; //2
+      break;
 
     case 3:
-    realyubication= 27+cou; //3
-    break;
+      realyubication= 27+cou; //3
+      break;
 
     case 4:
-    realyubication= 37+cou; //4
-    break;
+      realyubication= 37+cou; //4
+      break;
 
     default: 
     g=true;
@@ -201,7 +205,7 @@ void boxesfunction(){
 
 else{f++;}
 
-//for(Q=0; Q<(quantity/filelayout); Q++){}
+
 
 }
 
@@ -340,16 +344,8 @@ void callsystem(){
       strncat(combinedDir, directory[sk], sizeof(combinedDir) - strlen(directory[sk])-1);
       }
     }
-
-
-    //snprintf(cdcom, 256, "cd %s", combinedDir);
-    snprintf(lscom, sizeof(combinedDir), "ls %s", combinedDir);
-    //printw("%s", combinedDir);
+    snprintf(lscom, sizeof(lscom), "ls %s", combinedDir);
     
-
-
-  //mvprintw(3,7, "%d", combinedDir);
-  system(cdcom);
   
   FILE* Readings = popen(lscom, "r");
   if (Readings == NULL) {
@@ -378,8 +374,7 @@ void callsystem(){
       f=1; 
   for(i=(0+filesperpage); i < dbfilesperpage; i++){  
     quantity=index;   
-    boxesfunction();
-  
+    
     //if (g=TRUE){i=0;}
 
   if(selectedfile==0){invertedcordinates=0;}
@@ -393,10 +388,10 @@ void callsystem(){
 
        strcpy(Printylonger, Printyan);
 
- int Nah= strlen(Printylonger);
+ int Nah= (int)strlen(Printylonger);
  mvprintw(1,1, "%d", Nah );
-
-  if (Nah>16){
+ boxesfunction();
+  if (Nah>10){
     
  
     for(int p = 0; Printylonger[p] != '\0'; p++) {
@@ -412,6 +407,7 @@ void callsystem(){
     snprintf(Printy, sizeof(Printy), "%s", options[i]);
     for (int j = 0; Printy[j] != '\0'; j++) {
         if (isalpha(Printy[j])) {
+          
             mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
             
             }
@@ -428,6 +424,7 @@ void callsystem(){
 
   attron(COLOR_PAIR(PAIR1));
   refresh();
+  //boxesfunction();
   }
 
 //Keyboard reading.
@@ -498,3 +495,4 @@ void alwaysrefresh(){
 }
 
 #endif
+ 
