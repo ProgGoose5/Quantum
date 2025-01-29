@@ -14,10 +14,11 @@ int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
 int cou=0; 
 int ygaps, gap;
-int selectedfile=0, actualfile=0; //Both for selecting files, but idk why i have two.
+int selectedfile=0,invertedcordinates= 0, actualfile=0; //All for the selection of files
 int NumDir=2;
 int verification=0;
-int invertedcordinates= 0;
+int actualaction=0;
+ 
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
 char* directory[300]={"","/"};
@@ -28,6 +29,7 @@ char *boxChar = " ";
 char combinedDir[4000];
 
 bool g=FALSE;
+bool inactions= FALSE; 
 
 struct Fileubs
 {
@@ -389,7 +391,7 @@ void callsystem(){
        strcpy(Printylonger, Printyan);
 
  int Nah= (int)strlen(Printylonger);
- mvprintw(1,1, "%d", Nah );
+
  boxesfunction();
   if (Nah>10){
     
@@ -411,7 +413,10 @@ void callsystem(){
             mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
             
             }
+        else if(isalnum(Printy[j])){
+          mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
         }
+
     }
     
   
@@ -425,55 +430,76 @@ void callsystem(){
   attron(COLOR_PAIR(PAIR1));
   refresh();
   //boxesfunction();
-  }
+  }}
 
 //Keyboard reading.
 void KeyCommands(){
   int cius= getch();
   switch(cius){
     case KEY_RIGHT:
-    if((invertedcordinates+1+filesperpage) < dbfilesperpage){
-    if(selectedfile<((filelayout*filedivision)-filelayout))
-    {selectedfile+=filelayout; invertedcordinates++;}}
-    else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+    if(inactions==FALSE){
+      if((invertedcordinates+1+filesperpage) < dbfilesperpage){
+        if(selectedfile<((filelayout*filedivision)-filelayout))
+        {selectedfile+=filelayout; invertedcordinates++;}}
+      else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+    }
+    
     break;
 
     case KEY_LEFT:
-    if(selectedfile>=filelayout)
-    {selectedfile-=filelayout; invertedcordinates--;}
-    else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;} 
+    if(inactions==FALSE){
+      if(selectedfile>=filelayout)
+        {selectedfile-=filelayout; invertedcordinates--;}
+      else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;} 
+    }
     break;
 
     case KEY_UP:
+    if(inactions==FALSE){
       if(((selectedfile)%(filelayout))!= 0 || selectedfile==0){
-      if(selectedfile>0)
-      {selectedfile--; invertedcordinates-=(filedivision);}}
+        if(selectedfile>0)
+        {selectedfile--; invertedcordinates-=(filedivision);}}
       else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;}
+    }
       break;
 
     case KEY_DOWN:
-    if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
-    if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
-    if(selectedfile<(filelayout*filedivision)-1){
-    selectedfile++; invertedcordinates+=(filedivision);
-    }}}
-    else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+    if(inactions==FALSE){
+      if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
+        if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
+          if(selectedfile<(filelayout*filedivision)-1){
+            selectedfile++; invertedcordinates+=(filedivision);
+      } }  }
+      else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
+    }
     break;
 
     case KEY_F(1):
+    if(inactions==FALSE){
     directory[NumDir]= NULL;
     NumDir--;
+    selectedfile=0;
+    actualpage=0;
+    }
     break;
 
     case KEY_F(3):
     {
+    if(inactions==FALSE){
     char Directory[256];
     char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
     if (newline) *newline = '\0';
     snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
     directory[NumDir]= strdup(Directory);
     NumDir++;
-    }
+    selectedfile=0;
+    actualpage=0;
+    } }
+    break;
+
+    case KEY_F(5):
+    if(inactions==FALSE){inactions==TRUE;}
+    else{inactions==FALSE;}
     break;
   }
 
@@ -495,4 +521,8 @@ void alwaysrefresh(){
 }
 
 #endif
+ 
+    
+
+
  
