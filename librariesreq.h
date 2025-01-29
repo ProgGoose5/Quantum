@@ -8,3 +8,4 @@
 #include <dirent.h>
 #include <math.h>
 #include <ctype.h>
+//Here lies all the libraries we're gonna use.
