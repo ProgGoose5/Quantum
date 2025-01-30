@@ -1,6 +1,6 @@
 #include "librariesreq.h"
 #ifndef APPEREANCE_C
-#include "globalfunc.c"
+#include "actions.c"
 
 
 void genprint(){
@@ -47,10 +47,17 @@ void FolderIcon(){
 │            │
 │            │
 ┕━━━━━━━━━━━━┙
-123456789abcdefghi */
+123456789abcdefghi 
+▆▆▆▆▆ ◣
+███████▍
+███████▍
+███████▍
+███████▍
+*/
 
 int positionX, positionY;
-char* fileicons[9]={"━", "│", "═", "╕", "┑", "┍", "┕", "┙", "╘"};
+char* fileicons[13]={"━", "│", "═", "╕", "┑", "┍", "┕", "┙", "╘"};
+char* fileicons2[2]={"▆▆▆▆▆ ◣", "███████▎"};
 int C=1;
 int D=1;
 
@@ -101,7 +108,7 @@ C++;
     { attron(COLOR_PAIR(PAIR2));}
   else
     { attron(COLOR_PAIR(PAIR1));}
-
+if(filingarray[H]==FALSE){
 mvprintw(positionY, positionX, "%s", fileicons[5]);//corner
 mvprintw(positionY+1, positionX+13, "%s", fileicons[3]);//corner
 for(int xb=1; xb<6; xb++){//horizontal
@@ -132,7 +139,43 @@ mvprintw(positionY+4, positionX+13, "%s", fileicons[7]);
 
 if (C==filedivision+1){C=1; D++;}
 }
+else if(filingarray[H]==TRUE){
+
+mvprintw(positionY, positionX+3, "%s", fileicons2[0]);
+
+for(int vd=1; vd<5; vd++){
+mvprintw(positionY+vd, positionX+3, "%s", fileicons2[1]);
+if (C==filedivision+1){C=1; D++;}
+}
+
 
 }
+
+}
+
+}
+
+void Leftside(){
+    char *commandsnames[20]= {"New Directory", "New File", "Copy", "Cut", "Paste", "Rename", "Execute Locally", "Execute Wined", "CMake!", "Make!"};
+    for (int l=0; l< 8; l++){
+        if (l==actualaction){
+            attron(COLOR_PAIR(PAIR2));
+        }
+        else{
+            attron(COLOR_PAIR(PAIR1));
+        }
+        mvprintw(3+l, 2, "%s", commandsnames[l]);
+        attron(COLOR_PAIR(PAIR3));
+        mvprintw(2,2, "Commands");
+    }
+    
+}
+
+void directorybar(){
+    attron(COLOR_PAIR(PAIR3));
+    mvprintw(1, (x/4+1), "%s", combinedDir);
+    refresh();
+}
+
 
 #endif 

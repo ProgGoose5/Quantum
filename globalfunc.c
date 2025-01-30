@@ -22,14 +22,18 @@ int actualaction=0;
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
 char* directory[300]={"","/"};
-//Char Variables
-char* cdcom= "cd ";
 char* options[1000] = {" "};
+char *allowedcharacters[10]={"_", ".", ":", ",", "*", "+", "ñ", "(", ")", "-"};
+//Char Variables
+char cdcom[4000];
 char *boxChar = " ";
 char combinedDir[4000];
-
+//boolens
 bool g=FALSE;
 bool inactions= FALSE; 
+bool commandcall=FALSE;
+bool isfile;
+bool filingarray[4960];
 
 struct Fileubs
 {
@@ -50,7 +54,7 @@ void definitions()
 
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
   init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
-  init_pair(PAIR3, COLOR_WHITE, COLOR_YELLOW);
+  init_pair(PAIR3, COLOR_CYAN, COLOR_BLACK);
 
   
 }
@@ -337,9 +341,11 @@ void Boxrep(){
 
 //System and apps representation function.
 void callsystem(){
-  directory[0]= cdcom;
+
   char lscom[5000];
  
+  //LS command
+
   memset(combinedDir, 0, sizeof(combinedDir));
     for(int sk= 1; sk<NumDir; sk++){
       if(directory[sk]!= NULL){
@@ -347,8 +353,12 @@ void callsystem(){
       }
     }
     snprintf(lscom, sizeof(lscom), "ls %s", combinedDir);
+
+    //CD command
     
+    snprintf(cdcom, sizeof(combinedDir), "cd %s", combinedDir);
   
+  system(cdcom);
   FILE* Readings = popen(lscom, "r");
   if (Readings == NULL) {
     mvprintw(4, 7, "Failed to run command");
@@ -377,7 +387,25 @@ void callsystem(){
   for(i=(0+filesperpage); i < dbfilesperpage; i++){  
     quantity=index;   
     
-    //if (g=TRUE){i=0;}
+    char filesinthispage[4096];
+    memset(filesinthispage, 0, sizeof(filesinthispage));
+    char *newline = strchr(options[i], '\n');
+    if (newline) *newline = '\0';
+    strcat(filesinthispage, combinedDir);
+    strcat(filesinthispage, "/");
+    strcat(filesinthispage, options[i]);
+  
+  DIR* directorycomprobation= opendir(filesinthispage);
+  if (directorycomprobation!=NULL){
+    isfile=FALSE;
+  } else {
+    isfile=TRUE;
+  }
+  closedir(directorycomprobation);
+
+
+
+  filingarray[i]= isfile;
 
   if(selectedfile==0){invertedcordinates=0;}
  if (i == (invertedcordinates+filesperpage))
@@ -395,13 +423,18 @@ void callsystem(){
  boxesfunction();
   if (Nah>10){
     
- 
+  int q=0;
     for(int p = 0; Printylonger[p] != '\0'; p++) {
-      if(isalpha(Printylonger[p])){
+      
+      if((isalpha(Printylonger[p]) || isalnum(Printylonger[p])) && q < 3){
+        
       mvprintw(realyubication, realxubication + (p % 10), "%c", Printylonger[p]);
       if ((p + 1) % 10 == 0) {
-        realyubication++;
-      }}}
+        realyubication++; 
+        q++;
+      }
+      if(q==3){break;}
+      }}
   }
 
   else{
@@ -422,14 +455,12 @@ void callsystem(){
   
   }
 
-    //c+= gap;
-    //mvprintw(cou, c, "%s", options[i]);
-    //c+= strlen(options[i])+gap;
+  
   
 
   attron(COLOR_PAIR(PAIR1));
   refresh();
-  //boxesfunction();
+  
   }}
 
 //Keyboard reading.
@@ -461,6 +492,8 @@ void KeyCommands(){
         {selectedfile--; invertedcordinates-=(filedivision);}}
       else if(actualpage>0){actualpage--; selectedfile=0; invertedcordinates=0;}
     }
+    else if(inactions==TRUE && actualaction>0){actualaction--;}
+
       break;
 
     case KEY_DOWN:
@@ -472,6 +505,7 @@ void KeyCommands(){
       } }  }
       else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
     }
+    else if(inactions==TRUE && actualaction<7){actualaction++;}
     break;
 
     case KEY_F(1):
@@ -484,22 +518,25 @@ void KeyCommands(){
     break;
 
     case KEY_F(3):
-    {
+    
     if(inactions==FALSE){
-    char Directory[256];
-    char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
-    if (newline) *newline = '\0';
-    snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
-    directory[NumDir]= strdup(Directory);
-    NumDir++;
-    selectedfile=0;
-    actualpage=0;
-    } }
+      char Directory[256];
+      char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
+      if (newline) *newline = '\0';
+        snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
+        directory[NumDir]= strdup(Directory);
+        NumDir++;
+        selectedfile=0;
+        actualpage=0;
+        } 
+    else if(inactions==TRUE){
+      commandcall=TRUE;
+    }
     break;
 
     case KEY_F(5):
-    if(inactions==FALSE){inactions==TRUE;}
-    else{inactions==FALSE;}
+    if(inactions==FALSE){inactions=TRUE;}
+    else{inactions=FALSE;}
     break;
   }
 
