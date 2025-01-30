@@ -28,6 +28,10 @@ int main()
         genprint();        
     //Ask the system to get the directories 
         callsystem(); 
+
+        Leftside();
+        Actioncall();
+        directorybar();
      }
      //Callin' a read of the keyboard.
         KeyCommands();
