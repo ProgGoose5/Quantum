@@ -28,13 +28,17 @@ int main()
         genprint();        
     //Ask the system to get the directories 
         callsystem(); 
-
+    //Calling the Leftside appeareance to Execute.
         Leftside();
+    //If a command is called, Actioncall will execute it
         Actioncall();
+    //Shows the actual directory bar.
         directorybar();
      }
      //Callin' a read of the keyboard.
+        boxesdef();  
         KeyCommands();
+        boxesdef();  
     //Repeat in loop.
     } 
    return 0;
