@@ -49,8 +49,6 @@ void definitions()
   keypad(stdscr,TRUE);
   noecho();
 
- 
-  filelayout= 5;
 
   init_pair(PAIR1, COLOR_WHITE, COLOR_BLACK);
   init_pair(PAIR2, COLOR_BLACK, COLOR_WHITE);
@@ -100,12 +98,13 @@ if((txright/filedivision)>=26 && filedivision<5){
   filedivision++;
 }
 
-if((y/filelayout)<10 && filelayout>1){
+if((round(y/(filelayout+1)))<7 && filelayout>1){
   filelayout--;
-}
-if((y/filelayout)>12 && filelayout<5){
+
+if((round(y/(filelayout+1)))>9 && filelayout<5){
   filelayout++;
-}
+}}
+
  boxesdivisions= 18;
 initboxes= (x/4)+1;
 ygaps= (int)round((y/5));
@@ -471,7 +470,9 @@ void KeyCommands(){
     if(inactions==FALSE){
       if((invertedcordinates+1+filesperpage) < dbfilesperpage){
         if(selectedfile<((filelayout*filedivision)-filelayout))
-        {selectedfile+=filelayout; invertedcordinates++;}}
+        {
+          
+          selectedfile= selectedfile+filelayout; invertedcordinates++;}}
       else if (actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
     }
     
@@ -500,7 +501,7 @@ void KeyCommands(){
     if(inactions==FALSE){
       if(((invertedcordinates+1)+filedivision+filesperpage) <= dbfilesperpage && (invertedcordinates+filesperpage+1) <= dbfilesperpage){
         if(((selectedfile+1)%(filelayout))!= 0 || selectedfile==0){
-          if(selectedfile<(filelayout*filedivision)-1){
+          if((selectedfile<(filelayout*filedivision)-1) && (selectedfile+1)%(filelayout)!= 0){
             selectedfile++; invertedcordinates+=(filedivision);
       } }  }
       else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
@@ -519,7 +520,7 @@ void KeyCommands(){
 
     case KEY_F(3):
     
-    if(inactions==FALSE){
+    if(inactions==FALSE && filingarray[invertedcordinates]==FALSE){
       char Directory[256];
       char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
       if (newline) *newline = '\0';
@@ -554,12 +555,9 @@ void alwaysrefresh(){
     mvprintw(1,((x/4)+1),"%s", combinedDir);
     mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
     
-
+boxesdef();
 }
 
 #endif
  
-    
-
-
  
