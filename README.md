@@ -8,10 +8,25 @@ Quantum, its a file manager meant to be similar to dolphin but using a Text User
 My main objetive is to push myself as far I can before starting to use GUIs. 
 As Goosey, this will be build almost completly in C.
 
-```console
+Installation:
+
+First, Clone the repo.
+```
+$ git clone https://github.com/ProgGoose5/Quantum 
+```
+Then, go to the Quantum file and create the "build" directory.
+```
 $ cd ~/Quantum && mkdir build
-
+```
+Done that, enter into build and call Cmake.
+```
 $ cd ~/Quantum/build && cmake .. 
-
+```
+Finally, call make.
+```
 $ make
-´´´
+```
+You can use quantum by calling it in your terminal
+```
+$ Quantum
+```
