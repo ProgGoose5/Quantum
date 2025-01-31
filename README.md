@@ -30,3 +30,7 @@ You can use quantum by calling it in your terminal
 ```
 $ Quantum
 ```
+Buttons are:
+F1= Going back a Dir
+F3= Entering a Dir
+F5= Change selected area
