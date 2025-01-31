@@ -24,7 +24,7 @@ $ cd ~/Quantum/build && cmake ..
 ```
 Finally, call make.
 ```
-$ make
+$ sudo make
 ```
 You can use quantum by calling it in your terminal
 ```
