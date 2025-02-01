@@ -5,6 +5,10 @@
 
 char *commands[10]={"mkdir ", "touch ", "cp ", "mv ", "cp ", "mv ", "./", "wine ", "cmake ", "make "};
 char copyfrom[256];
+char cd[8]= "cd ";
+char cding[256];
+char joint[500];
+
 bool ccopy= FALSE;
 bool ccut= FALSE;
 
@@ -107,7 +111,7 @@ char renaming[256]= "";
 char cding[256];
 char rename[256];
 char space[8]= " ";
-char cd[8]= "cd ";
+
 char joint[562];
 char ampersons[8]= " && ";
 memset(renaming, 0, sizeof(renaming));
@@ -132,10 +136,7 @@ system(joint);
 }
 
 void Execute(){
-char cd[8]= "cd ";
-char cding[256];
 char exec[256]= "";
-char joint[500];
 char ampersons[8]= " && ";
 
 memset(cding, 0, sizeof(cding));
@@ -156,8 +157,7 @@ system(joint);
 }
 
 void Wine(){
-char cd[8]= "cd ";
-char cding[256];
+
 char wine[256]= "";
 char newdir[10]= "/";
 
@@ -169,6 +169,34 @@ strcat(wine, commands[7]);
 strcat(wine, options[invertedcordinates]);
 
 system(wine);
+}
+
+void Cmake(){
+    char ampersons[8]= " && ";
+
+memset(joint, 0, sizeof(joint));
+
+strcat(joint, cd);
+strcat(joint, combinedDir);
+strcat(joint, ampersons);
+strcat(joint, commands[8]);
+strcat(joint, combinedDir);
+
+system(joint);
+}
+
+void Make(){
+   char ampersons[8]= " && ";
+
+memset(joint,0, sizeof(joint));
+
+strcat(joint, cd);
+strcat(joint, combinedDir);
+strcat(joint, ampersons);
+strcat(joint, commands[9]);
+strcat(joint, combinedDir);
+
+system(joint);
 }
 
 void Actioncall(){
@@ -205,9 +233,20 @@ if(commandcall==TRUE){
          case 7:
         Wine();
         break;
+
+
+         case 8:
+        Cmake();
+        break;
+
+
+         case 9:
+        Make();
+        break;
     }
 
     commandcall=FALSE;
+    blackout();
 }
 }
 

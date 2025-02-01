@@ -513,7 +513,7 @@ void KeyCommands(){
       } }  }
       else if(actualpage<page){actualpage++; selectedfile=0; invertedcordinates=0;}
     }
-    else if(inactions==TRUE && actualaction<7){actualaction++;}
+    else if(inactions==TRUE && actualaction<9){actualaction++;}
     break;
 
     case KEY_F(1):
