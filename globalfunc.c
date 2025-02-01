@@ -388,6 +388,9 @@ void callsystem(){
   for(i=(0+filesperpage); i < dbfilesperpage; i++){  
     quantity=index;   
     
+  mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
+
+
     char filesinthispage[4096];
     memset(filesinthispage, 0, sizeof(filesinthispage));
     char *newline = strchr(options[i], '\n');
@@ -418,6 +421,8 @@ void callsystem(){
     char Printylonger[128];
 
        strcpy(Printylonger, Printyan);
+
+
 
  int Nah= (int)strlen(Printylonger);
 
@@ -565,4 +570,5 @@ boxesdef();
 }
 
 #endif
+
  
