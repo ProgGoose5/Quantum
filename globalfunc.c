@@ -23,7 +23,7 @@ int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, real
 //CharStrings 
 char* directory[300]={"","/"};
 char* options[1000] = {" "};
-char *allowedcharacters[10]={"_", ".", ":", ",", "*", "+", "ñ", "(", ")", "-"};
+char *allowedcharacters="_. :,*+ñ()-";
 //Char Variables
 char cdcom[4000];
 char *boxChar = " ";
@@ -40,7 +40,7 @@ struct Fileubs
   int xposition, yposition, xlength, ylength, actualy;
 }Fileubs1,Fileubs2,Fileubs3,Fileubs4,Fileubs5;
 
-
+//First definitions.
 void definitions()
 {
   setlocale(LC_ALL, "");
@@ -57,6 +57,7 @@ void definitions()
   
 }
 
+//Prints a black screen, for cleaning redimensions
 void blackout()
 {
  for(i=-2; i<=y; i++){
@@ -67,6 +68,7 @@ void blackout()
     }
 }
 
+//Calls the system and reads the size of the terminal
 void Resizing(){
   //BASH COMMANDS
   char lines[12]= "tput lines"; 
@@ -101,7 +103,7 @@ if((txright/filedivision)>=26 && filedivision<5){
 if((round(y/(filelayout+1)))<7 && filelayout>1){
   filelayout--;
 
-if((round(y/(filelayout+1)))>9 && filelayout<5){
+if((round(y/(filelayout+1)))>=9 && filelayout<5){
   filelayout++;
 }}
 
@@ -376,7 +378,7 @@ void callsystem(){
   filesperpage= (filedivision*filelayout)*actualpage;
   dbfilesperpage= (filedivision*filelayout)*(actualpage+1);
   if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
-    for(page=0; page<((index/(filedivision*filelayout))-1); page++){
+    for(page=0; page<((index/(filedivision*filelayout))); page++){
   }
 
   actualfile=0;
@@ -425,7 +427,7 @@ void callsystem(){
   int q=0;
     for(int p = 0; Printylonger[p] != '\0'; p++) {
       
-      if((isalpha(Printylonger[p]) || isalnum(Printylonger[p])) && q < 3){
+      if((isalpha(Printylonger[p]) || isalnum(Printylonger[p]) || strchr(allowedcharacters, Printylonger[p])!= NULL) && q < 3){
         
       mvprintw(realyubication, realxubication + (p % 10), "%c", Printylonger[p]);
       if ((p + 1) % 10 == 0) {
@@ -440,7 +442,7 @@ void callsystem(){
     char Printy[16];
     snprintf(Printy, sizeof(Printy), "%s", options[i]);
     for (int j = 0; Printy[j] != '\0'; j++) {
-        if (isalpha(Printy[j])) {
+        if (isalpha(Printy[j] || isalnum(Printy[j]))) {
           
             mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
             
@@ -554,10 +556,13 @@ void alwaysrefresh(){
 
     mvprintw(1,((x/4)+1),"%s", combinedDir);
     mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
-    
+
+  if((dbfilesperpage-quantity)>0){dbfilesperpage-=(dbfilesperpage-quantity);}
+    for(page=0; page<((quantity/(filedivision*filelayout))); page++){
+  }
+
 boxesdef();
 }
 
 #endif
- 
  
