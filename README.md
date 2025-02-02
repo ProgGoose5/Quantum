@@ -16,9 +16,8 @@ As Goosey, this will be build almost completly in C.
 - Small Command line.
 
 # Dependencies:
-- lncurses
-- Cmake
-- make
+- Ncurses
+- Symbols Nerd Font Mono
 
 # Installation:
 
