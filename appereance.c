@@ -157,18 +157,33 @@ if (C==filedivision+1){C=1; D++;}
 
 void Leftside(){
     char *commandsnames[20]= {"New Directory", "New File", "Copy", "Cut", "Paste", "Rename", "Execute Locally", "Execute Wined", "CMake!", "Make!", "Command Input"};
+    char *commandsicons[]={"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", " 󰲉  ", "   ", "   " };
     for (int l=0; l< 11; l++){
+        if(x>75){
         if (l==actualaction){
             attron(COLOR_PAIR(PAIR2));
         }
         else{
             attron(COLOR_PAIR(PAIR1));
         }
-        mvprintw(3+l, 2, "%s", commandsnames[l]);
+        mvprintw(3+l, 2, "%s  ", commandsicons[l]);
+        mvprintw(3+l, 5, "%s  ", commandsnames[l]);
         attron(COLOR_PAIR(PAIR3));
         mvprintw(2,2, "Commands");
     }
-    
+    else{
+        if (l==actualaction){
+            attron(COLOR_PAIR(PAIR2));
+        }
+        else{
+            attron(COLOR_PAIR(PAIR1));
+        }
+        mvprintw(3+l, 2, "%s", commandsicons[l]);
+        attron(COLOR_PAIR(PAIR3));
+        mvprintw(2,2, "Coms");
+
+
+    }}
 }
 
 void directorybar(){
