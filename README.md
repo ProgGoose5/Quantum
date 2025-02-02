@@ -8,7 +8,19 @@ Quantum, its a file manager meant to be similar to dolphin but using a Text User
 My main objetive is to push myself as far I can before starting to use GUIs. 
 As Goosey, this will be build almost completly in C.
 
-Installation:
+# Integrated Functions:
+- Create Directories and files.
+- Copy/Cut And Paste
+- Cmake and Make
+- Execute locally or with wine.
+- Small Command line.
+
+# Dependencies:
+- lncurses
+- Cmake
+- make
+
+# Installation:
 
 First, Clone the repo.
 ```
@@ -30,7 +42,10 @@ You can use quantum by calling it in your terminal
 ```
 $ Quantum
 ```
-Buttons are:
+
+#Use:
+
 F1= Going back a Dir
 F3= Entering a Dir
 F5= Change selected area
+(Keys Might Change in the Future)

@@ -156,8 +156,8 @@ if (C==filedivision+1){C=1; D++;}
 }
 
 void Leftside(){
-    char *commandsnames[20]= {"New Directory", "New File", "Copy", "Cut", "Paste", "Rename", "Execute Locally", "Execute Wined", "CMake!", "Make!"};
-    for (int l=0; l< 10; l++){
+    char *commandsnames[20]= {"New Directory", "New File", "Copy", "Cut", "Paste", "Rename", "Execute Locally", "Execute Wined", "CMake!", "Make!", "Command Input"};
+    for (int l=0; l< 11; l++){
         if (l==actualaction){
             attron(COLOR_PAIR(PAIR2));
         }

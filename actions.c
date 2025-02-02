@@ -12,6 +12,17 @@ char joint[500];
 bool ccopy= FALSE;
 bool ccut= FALSE;
 
+void CdCommand(){
+
+char ampersons[8]= " && ";
+
+memset(joint,0, sizeof(joint));
+strcat(joint, cd);
+strcat(joint, combinedDir);
+strcat(joint, ampersons);
+
+}
+
 void Createdir(){
     char makeadir[256] = "";
     char newdir[10]= "/";
@@ -199,6 +210,21 @@ strcat(joint, combinedDir);
 system(joint);
 }
 
+void MicroTerminal(){
+char Comands[564];
+
+memset(Comands,0,sizeof(Comands));
+CdCommand();
+ mvprintw(1, (x/4+1), "$ ");
+echo();
+getstr(Comands);
+noecho();
+
+strcat(joint, Comands);
+
+system(joint);
+}
+
 void Actioncall(){
 if(commandcall==TRUE){
     switch(actualaction){
@@ -243,6 +269,11 @@ if(commandcall==TRUE){
          case 9:
         Make();
         break;
+
+        case 10:
+        MicroTerminal();
+        break;
+
     }
 
     commandcall=FALSE;
