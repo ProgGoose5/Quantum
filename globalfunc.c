@@ -62,8 +62,6 @@ void definitions()
 //Calls the system and reads the size of the terminal
 void Resizing(){
   //BASH COMMANDS
-  char lines[12]= "tput lines"; 
-  char columns[12]="tput cols"; 
   //Defining variables to copy the result of the commands
   int lns = 0, cols = 0;
 
