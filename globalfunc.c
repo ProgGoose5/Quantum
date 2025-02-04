@@ -57,16 +57,7 @@ void definitions()
   
 }
 
-//Prints a black screen, for cleaning redimensions
-void blackout()
-{
- for(i=-2; i<=y; i++){
-   for(int j=-2; j<=x+2; j++){
-      attron(COLOR_PAIR(PAIR1));
-      mvprintw(i, j, " ");
-        }
-    }
-}
+
 
 //Calls the system and reads the size of the terminal
 void Resizing(){
@@ -75,8 +66,8 @@ void Resizing(){
   char columns[12]="tput cols"; 
   //Defining variables to copy the result of the commands
   int lns = 0, cols = 0;
-  FILE* lines_fp = popen(lines, "r"); //Calls the command into Bash and Reads the results.
-  FILE* columns_fp = popen(columns, "r"); //Same.
+
+//Fopen wanst required!!!
 
 // Get the number of lines and columns
 if(lns != LINES || cols != COLS){
@@ -92,11 +83,14 @@ if(lns != LINES || cols != COLS){
 void boxesdef() {
 
 txright= (x/4)*3;
+boxesdivisions= 18;
+initboxes= (x/4)+1;
+ygaps= (int)round((y/5));
 
 if((round(txright/filedivision))<20 && filedivision>1){
   filedivision--;
 }
-if((txright/filedivision)>=26 && filedivision<5){
+else if((txright/filedivision)>=28 && filedivision<5){
   filedivision++;
 }
 
@@ -106,12 +100,6 @@ if((round(y/(filelayout+1)))<7 && filelayout>1){
 if((round(y/(filelayout+1)))>=9 && filelayout<5){
   filelayout++;
 }}
-
- boxesdivisions= 18;
-initboxes= (x/4)+1;
-ygaps= (int)round((y/5));
-
-
 
 //definition of Fileubs1
 Fileubs1.xposition= initboxes;
@@ -147,6 +135,7 @@ Fileubs5.xlength= boxesdivisions+Fileubs5.xposition;
 }
 
 //The functionality of the boxes (Not mistake with rep)
+//Also, DONT TOUCH. It works as it is.
 void boxesfunction(){
 
   int auxiliarstrlen= (int)strlen(options[i]);
@@ -216,7 +205,8 @@ else{f++;}
 
 }
 
-//Made for executing upon every box printed.
+//Made for executing upon every box printed, Dummy me made boxes print one space each one instead of
+// printing themselves completly.
 void verify(){
 
 if(verification==selectedfile){
@@ -231,14 +221,11 @@ else{
 }
 
 //The printing of each box.
+//I hate this function with my heart. Its an Horrible function, but it does what it is intended to.
 void Boxrep(){
   
   for(int G= 1; G<=5; G++){
-  
-  
     for(int L=Fileubs1.yposition; L<=Fileubs1.ylength; L++){
-     
-    
       for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
       { verification=0;
         verify();
@@ -342,11 +329,8 @@ void Boxrep(){
 
 //System and apps representation function.
 void callsystem(){
-
   char lscom[5000];
  
-  //LS command
-
   memset(combinedDir, 0, sizeof(combinedDir));
     for(int sk= 1; sk<NumDir; sk++){
       if(directory[sk]!= NULL){
@@ -388,11 +372,12 @@ void callsystem(){
   for(i=(0+filesperpage); i < dbfilesperpage; i++){  
     quantity=index;   
     
-  mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
-
+    mvprintw(y-1, x-12, "Pages %d/%d",actualpage, page);
 
     char filesinthispage[4096];
+
     memset(filesinthispage, 0, sizeof(filesinthispage));
+    
     char *newline = strchr(options[i], '\n');
     if (newline) *newline = '\0';
     strcat(filesinthispage, combinedDir);
@@ -406,8 +391,6 @@ void callsystem(){
     isfile=TRUE;
   }
   closedir(directorycomprobation);
-
-
 
   filingarray[i]= isfile;
 
@@ -427,14 +410,14 @@ void callsystem(){
  int Nah= (int)strlen(Printylonger);
 
  boxesfunction();
+  
   if (Nah>10){
     
   int q=0;
     for(int p = 0; Printylonger[p] != '\0'; p++) {
       
       if((isalpha(Printylonger[p]) || isalnum(Printylonger[p]) || strchr(allowedcharacters, Printylonger[p])!= NULL) && q < 3){
-        
-      mvprintw(realyubication, realxubication + (p % 10), "%c", Printylonger[p]);
+        mvprintw(realyubication, realxubication + (p % 10), "%c", Printylonger[p]);
       if ((p + 1) % 10 == 0) {
         realyubication++; 
         q++;
@@ -448,9 +431,7 @@ void callsystem(){
     snprintf(Printy, sizeof(Printy), "%s", options[i]);
     for (int j = 0; Printy[j] != '\0'; j++) {
         if (isalpha(Printy[j] || isalnum(Printy[j]))) {
-          
             mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
-            
             }
         else if(isalnum(Printy[j])){
           mvprintw(realyubication, realxubication + j, "%c", Printy[j]);
@@ -471,7 +452,9 @@ void callsystem(){
 
 //Keyboard reading.
 void KeyCommands(){
+
   int cius= getch();
+
   switch(cius){
     case KEY_RIGHT:
     if(inactions==FALSE){

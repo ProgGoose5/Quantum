@@ -11,6 +11,8 @@ int main()
      while(1){
 
     for(int jk= 0; jk< 2; jk++){
+    //Clearing the screen
+        clear();
     //Calling resizing for measure the terminal.
         Resizing(); 
     //Defining properties of the boxes
@@ -18,7 +20,7 @@ int main()
     //Refresh important variables...
         alwaysrefresh();
     //Call a blackout to clean the screen 
-        blackout(); 
+
     //Redifine the boxes (Just in case...)
         boxesdef();         
     //Call the box printing(where the boxes print vertically)
@@ -35,10 +37,11 @@ int main()
     //Shows the actual directory bar.
         directorybar();
      }
+     //Redifining boxes variables
+     boxesdef();  
      //Callin' a read of the keyboard.
-        boxesdef();  
-        KeyCommands();
-        boxesdef();  
+     KeyCommands();
+        
     //Repeat in loop.
     } 
    return 0;

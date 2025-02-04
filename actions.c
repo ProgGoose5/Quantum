@@ -277,7 +277,7 @@ if(commandcall==TRUE){
     }
 
     commandcall=FALSE;
-    blackout();
+    clear();
 }
 }
 
