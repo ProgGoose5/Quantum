@@ -117,13 +117,11 @@ memset(copying, 0, sizeof(copying));
 
 void Rename(){
 
-char newdir[10]= "/";
+
 char renaming[256]= "";
-char cding[256];
 char rename[256];
 char space[8]= " ";
 
-char joint[562];
 char ampersons[8]= " && ";
 memset(renaming, 0, sizeof(renaming));
 memset(joint, 0, sizeof(joint));
@@ -170,7 +168,6 @@ system(joint);
 void Wine(){
 
 char wine[256]= "";
-char newdir[10]= "/";
 
 memset(cding, 0, sizeof(cding));
 strcat(cding, cd);

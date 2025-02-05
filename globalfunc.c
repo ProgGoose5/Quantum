@@ -343,10 +343,7 @@ void callsystem(){
   
   system(cdcom);
   FILE* Readings = popen(lscom, "r");
-  if (Readings == NULL) {
-    mvprintw(4, 7, "Failed to run command");
-    return;
-  }
+
 
   char buffer[256];
   int index = 0;
