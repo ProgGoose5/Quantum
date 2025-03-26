@@ -300,7 +300,7 @@ void Boxrep(){
 
   if(filedivision>=5){
       for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
-      { verification=20;
+      { verification=filelayout*4;
         verify();
         mvprintw(L, O, "%s", boxChar);
         if(filelayout>=2){
