@@ -220,111 +220,43 @@ else{
 
 //The printing of each box.
 //I hate this function with my heart. Its an Horrible function, but it does what it is intended to.
+void BoxPrint(int K, int M, int vernum, int L, int no){
+  if (filedivision>=no) {
+
+  for(int O=(K); O<(M); O++)
+  { 
+    verification=vernum;
+    verify();
+    mvprintw(L, O, "%s", boxChar);
+    if(filelayout>=2){
+      verify();
+      mvprintw(L + Fileubs2.yposition, O, "%s", boxChar); }
+    if(filelayout>=3){
+      verify();
+      mvprintw(L + Fileubs3.yposition, O, "%s", boxChar); }
+    if(filelayout>=4){
+      verify();
+      mvprintw(L + Fileubs4.yposition, O, "%s", boxChar); }
+    if(filelayout>=5){
+      verify();
+      mvprintw(L + Fileubs5.yposition, O, "%s", boxChar); }
+    } 
+
+}}
+
+//The printing of each box.
+//I hate this function with my heart. Its an Horrible function, but it does what it is intended to.
 void Boxrep(){
   
-  for(int G= 1; G<=5; G++){
     for(int L=Fileubs1.yposition; L<=Fileubs1.ylength; L++){
-      for(int O=(Fileubs1.xposition); O<(Fileubs1.xlength); O++)
-      { verification=0;
-        verify();
-        mvprintw(L, O, "%s", boxChar);
-        if(filelayout>=2){
-          verify();
-          mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
-        if(filelayout>=3){
-          verify();
-          mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
-        if(filelayout>=4){
-          verify();
-          mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
-        if(filelayout>=5){
-          verify();
-          mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-      } 
-    if(filedivision>=2){
-      for(int O=(Fileubs2.xposition); O<(Fileubs2.xlength); O++)
-      { verification=filelayout;
-        verify();
-        mvprintw(L, O, "%s", boxChar);
-        if(filelayout>=2 ){
-          verify();
-        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
-        if(filelayout>=3){
-          verify();
-          mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
-        if(filelayout>=4 ){
-          verify();
-          mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
-        if(filelayout>=5 ){
-          verify();
-          mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-      } }
 
-    if(filedivision>=3){
-      for(int O=(Fileubs3.xposition); O<(Fileubs3.xlength); O++)
-      { verification=filelayout*2;
-        verify();
-        mvprintw(L, O, "%s", boxChar);
-        if(filelayout>=2){
-        verify();
-        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
-        if(filelayout>=3 ){
-        verify();
-        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
-        if(filelayout>=4 ){
-        verify();
-        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
-        if(filelayout>=5 ){
-        verify();
-        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-      } }
-
-    if(filedivision>=4 ){
-      for(int O=(Fileubs4.xposition); O<(Fileubs4.xlength); O++)
-      { verification=filelayout*3;
-        verify();
-        mvprintw(L, O, "%s", boxChar);
-        if(filelayout>=2){
-        verify();
-        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
-        if(filelayout>=3 ){
-        verify();
-        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
-        if(filelayout>=4 ){
-        verify();
-        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
-        if(filelayout>=5 ){
-        verify();
-        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-      } }
-
-  if(filedivision>=5){
-      for(int O=(Fileubs5.xposition); O<(Fileubs5.xlength); O++)
-      { verification=filelayout*4;
-        verify();
-        mvprintw(L, O, "%s", boxChar);
-        if(filelayout>=2){
-        verify();
-        mvprintw(L+(Fileubs2.yposition),O, "%s", boxChar); }
-        if(filelayout>=3 ){
-        verify();
-        mvprintw(L+(Fileubs3.yposition),O, "%s", boxChar); }
-        if(filelayout>=4 ){
-        verify();
-        mvprintw(L+(Fileubs4.yposition),O, "%s", boxChar); }
-        if(filelayout>=5 ){
-        verify();
-        mvprintw(L+(Fileubs5.yposition),O, "%s", boxChar); }
-      } }
-      //When there's more fors... i must add an IF to
-      //call the verification of filedivision
-      
+      BoxPrint(Fileubs1.xposition, Fileubs1.xlength, 0, L, 1);
+      BoxPrint(Fileubs2.xposition, Fileubs2.xlength, filelayout, L, 2);
+      BoxPrint(Fileubs3.xposition, Fileubs3.xlength, filelayout*2, L, 3);
+      BoxPrint(Fileubs4.xposition, Fileubs4.xlength, filelayout*3, L, 4);
+      BoxPrint(Fileubs5.xposition, Fileubs5.xlength, filelayout*4, L, 5);
     }
-  
-
-
-} }
-
+  }
 //System and apps representation function.
 void callsystem(){
   char lscom[5000];
@@ -509,7 +441,11 @@ void KeyCommands(){
       char Directory[256];
       char *newline = strchr(options[invertedcordinates+filesperpage], '\n');
       if (newline) *newline = '\0';
-        snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
+        if (strchr(options[invertedcordinates+filesperpage], ' ') != NULL) {
+            snprintf(Directory, sizeof(Directory), "'/%s'", options[invertedcordinates+filesperpage]);
+        } else {
+            snprintf(Directory, sizeof(Directory), "/%s", options[invertedcordinates+filesperpage]);
+        }
         directory[NumDir]= strdup(Directory);
         NumDir++;
         selectedfile=0;
