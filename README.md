@@ -23,26 +23,26 @@ As Goosey, this will be build almost completly in C.
 
 First, Clone the repo.
 ```
-$ git clone https://github.com/ProgGoose5/Quantum 
+ git clone https://github.com/ProgGoose5/Quantum 
 ```
 Then, go to the Quantum file and create the "build" directory.
 ```
-$ cd ~/Quantum && mkdir build
+ cd ~/Quantum && mkdir build
 ```
 Done that, enter into build and call Cmake.
 ```
-$ cd ~/Quantum/build && cmake .. 
+ sudo cd ~/Quantum/build && cmake .. 
 ```
 Finally, call make.
 ```
-$ sudo make
+ sudo make
 ```
 You can use quantum by calling it in your terminal
 ```
 $ Quantum
 ```
 
-#Use:
+# Use:
 
 F1= Going back a Dir
 F3= Entering a Dir
