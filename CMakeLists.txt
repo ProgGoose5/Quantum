@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.20)
 project(Quantum C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lncursesw")
@@ -43,11 +43,27 @@ if(NOT FONT_CHECK)
     elseif(EXISTS "/etc/alpine-release")
         execute_process(COMMAND sudo apk add ttf-nerd-fonts-symbols-mono
                         RESULT_VARIABLE FONT_INSTALL_RESULT)
-    else()
-        message(FATAL_ERROR "Unsupported distribution. Please install ttf-nerd-fonts-symbols-mono manually.")
-    endif()
-    if(NOT FONT_INSTALL_RESULT EQUAL "0")
-        message(FATAL_ERROR "Failed to install ttf-nerd-fonts-symbols-mono. Please install it manually.")
+    elseif(EXISTS "/etc/linuxmint/info")
+        execute_process(COMMAND sudo apt-get install -y wget unzip
+                RESULT_VARIABLE DEPENDENCY_INSTALL_RESULT)
+        if(NOT DEPENDENCY_INSTALL_RESULT EQUAL "0")
+            message(FATAL_ERROR "Failed to install wget and unzip. Please install them manually.")
+        endif()
+        execute_process(COMMAND wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/NerdFontsSymbolsOnly.zip -O /tmp/NerdFontsSymbolsOnly.zip
+                RESULT_VARIABLE DOWNLOAD_RESULT)
+        if(NOT DOWNLOAD_RESULT EQUAL "0")
+            message(FATAL_ERROR "Failed to download Nerd Fonts Symbols. Please download it manually from https://github.com/ryanoasis/nerd-fonts/releases.")
+        endif()
+        execute_process(COMMAND unzip -o /tmp/NerdFontsSymbolsOnly.zip -d /usr/share/fonts
+                RESULT_VARIABLE UNZIP_RESULT)
+        if(NOT UNZIP_RESULT EQUAL "0")
+            message(FATAL_ERROR "Failed to unzip Nerd Fonts Symbols. Please unzip it manually.")
+        endif()
+        execute_process(COMMAND fc-cache -fv
+                RESULT_VARIABLE FONT_CACHE_RESULT)
+        if(NOT FONT_CACHE_RESULT EQUAL "0")
+            message(FATAL_ERROR "Failed to update font cache. Please run 'fc-cache -fv' manually.")
+        endif()
     endif()
 
 endif()
