@@ -42,7 +42,7 @@ You can use quantum by calling it in your terminal
 $ Quantum
 ```
 
-#Use:
+# Use:
 
 F1= Going back a Dir
 F3= Entering a Dir
