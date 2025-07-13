@@ -12,28 +12,22 @@ int i, f=1, t=1, Q=0; //Used to operate with fors and other things
 int quantity, page, actualpage=0, dbfilesperpage=0, filesperpage;
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
-int cou=0; 
-int ygaps, gap;
-int selectedfile=0,invertedcordinates= 0, actualfile=0; //All for the selection of files
-int NumDir=2;
-int verification=0;
-int actualaction=0;
+int cou=0, ygaps, gap;
+int selectedfile=0, invertedcordinates= 0, actualfile=0; //All for the selection of files
+
+int verification=0, actualaction=0, NumDir=2;
  
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[300]={"","/"};
-char* options[1000] = {" "};
-char *allowedcharacters="_. :,*+ñ()-";
+char* directory[300]={"","/"}, options[1000]={" "};
+
 //Char Variables
-char cdcom[4000];
-char *boxChar = " ";
-char combinedDir[4000];
+char cdcom[4000], combinedDir[4000];
+char *allowedcharacters="_. :,*+ñ()-", *boxChar = " ";
+
+
 //boolens
-bool g=FALSE;
-bool inactions= FALSE; 
-bool commandcall=FALSE;
-bool isfile;
-bool filingarray[4960];
+bool g=FALSE, inactions= FALSE, commandcall=FALSE, isfile, filingarray[4960];
 
 struct Fileubs
 {
