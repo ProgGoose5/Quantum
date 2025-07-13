@@ -44,6 +44,7 @@ struct Fileubs
 void definitions()
 {
   setlocale(LC_ALL, "");
+  setenv("NCURSES_FONT", "Monospace", 1);
   initscr();
   start_color();
   keypad(stdscr,TRUE);

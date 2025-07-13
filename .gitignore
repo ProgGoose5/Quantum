@@ -31,3 +31,6 @@ build/CMakeFiles/Quantum.dir/main.c.o
 build/CMakeFiles/Quantum.dir/main.c.o.d
 .gitignore
 build/CMakeFiles/Quantum.dir/compiler_depend.internal
+build/install_manifest.txt
+build/Quantum
+fonts/installfonts.sh
