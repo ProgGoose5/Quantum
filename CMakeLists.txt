@@ -7,7 +7,7 @@ file(GLOB MAIN
     "main.c"
     "variables.h"
 )
-
+set(MAIN main.c)
 message(STATUS "Checking For Ncurses")
 find_package(Curses REQUIRED)
 if (NOT Curses_FOUND)
