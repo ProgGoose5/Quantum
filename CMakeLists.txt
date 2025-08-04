@@ -15,11 +15,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E echo "alias Quantum=/usr/bin/Quantum" >> $ENV{HOME}~/.bashrc  
 )
 message(STATUS "Checking For Ncurses")
-
-find_package(libncurses REQUIRED)
-
-if(NOT libncurses_FOUND)
+find_package(Ncurses REQUIRED)
+if (NOT Ncurses_FOUND)
     message(STATUS "Ncurses Not Found")
-    message(FATAL_ERROR "Please Install it by the name libncurses, ncurses or similar"
-    
-    
+    message(FATAL_ERROR "Please Install it by the name libncurses, ncurses or similar")
