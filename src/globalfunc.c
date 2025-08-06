@@ -12,6 +12,7 @@ int i, f=1, t=1, Q=0; //Used to operate with fors and other things
 int quantity, page, actualpage=0, dbfilesperpage=0, filesperpage;
 int dirbar=2; //The space that occupies the directory bar
 int txright, filedivision=5,  filelayout=5; //Useful for the Boxes
+
 int cou=0, ygaps, gap;
 int selectedfile=0, invertedcordinates= 0, actualfile=0; //All for the selection of files
 
@@ -29,6 +30,7 @@ char *allowedcharacters="_. :,*+ñ()-", *boxChar = " ";
 //boolens
 bool g=FALSE, inactions= FALSE, commandcall=FALSE, isfile, filingarray[4960];
 
+
 struct Fileubs
 {
   int xposition, yposition, xlength, ylength, actualy;
@@ -38,7 +40,9 @@ struct Fileubs
 void definitions()
 {
   setlocale(LC_ALL, "");
+
   setenv("NCURSES_FONT", "Monospace", 1);
+
   initscr();
   start_color();
   keypad(stdscr,TRUE);
