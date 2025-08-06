@@ -42,8 +42,9 @@ endif()
 
 add_executable(Quantum main.c)
 install(TARGETS Quantum DESTINATION /usr/local/bin)
-add_custom_command(
+add_custom_command(   
     TARGET Quantum POST_BUILD
+    
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:Quantum> /usr/bin/
     COMMAND ${CMAKE_COMMAND} -E echo "alias Quantum=/usr/bin/Quantum" >> $ENV{HOME}~/.bashrc  
 )

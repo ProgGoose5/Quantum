@@ -8,7 +8,6 @@ char copyfrom[256];
 char cd[8]= "cd ";
 char cding[256];
 char joint[500];
-
 bool ccopy= FALSE;
 bool ccut= FALSE;
 

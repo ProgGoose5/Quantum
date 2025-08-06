@@ -20,7 +20,8 @@ int verification=0, actualaction=0, NumDir=2;
  
 int borderx, bordery, borderval, boxesdivisions, initboxes, realxubication, realyubication=0;
 //CharStrings 
-char* directory[300]={"","/"}, options[1000]={" "};
+char* directory[300]={"","/"};
+char* options[1000]={" "};
 
 //Char Variables
 char cdcom[4000], combinedDir[4000];
